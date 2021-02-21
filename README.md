@@ -1,4 +1,4 @@
-#Minesweeper (TDT4100 Project)
+# Minesweeper (TDT4100 Project)
 
 Minesweeper implemented in Java with Maven as build tool. 
 
