@@ -19,7 +19,7 @@ public class Board implements Iterable<Tile>{
 	}
 	
 	public Tile getTile(int x, int y) {
-		return null; 	
+		
 	}
 
 	@Override
@@ -45,15 +45,13 @@ public class Board implements Iterable<Tile>{
 					this.currentY += 1;
 					this.currentX = 1;
 				}
-				this.currentX += 1;
+				else {					
+					this.currentX += 1;
+				}
 				return nextTile;
 			}
 		};
 		return it;
 	}
-	
-	
-	
-	
 	
 }
