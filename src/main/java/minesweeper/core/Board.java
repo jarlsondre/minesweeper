@@ -19,7 +19,7 @@ public class Board implements Iterable<Tile>{
 	}
 	
 	public Tile getTile(int x, int y) {
-		
+		return null; 	
 	}
 
 	@Override

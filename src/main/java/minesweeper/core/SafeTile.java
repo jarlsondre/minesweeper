@@ -16,7 +16,7 @@ public class SafeTile extends Tile {
 	}
 	
 	public int getSurroundingBombAmount() {
-		return null;
+		return 0;
 	}
 
 }
