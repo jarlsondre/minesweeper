@@ -46,4 +46,9 @@ public abstract class Tile {
 	 */
 	public abstract boolean hasBomb();
 
+	@Override
+	public String toString() {
+		return (this.hasBomb() ? "B" : "0");
+	}
+
 }

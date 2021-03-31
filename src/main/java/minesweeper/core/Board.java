@@ -3,6 +3,7 @@ package minesweeper.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Klasse som skal representere brettet. Dette skal inneholde
@@ -25,17 +26,43 @@ public class Board implements Iterable<Tile> {
 	 * Metode for å lage brettet.
 	 */
 	private void makeBoard() {
+		for (int i = 0; i < size; i++) {
+			List<Tile> temp = new ArrayList<Tile>();
+			for (int j = 0; j < size; j++) {
+				Random rand = new Random();
+				float rand_num = rand.nextFloat();
+				if (rand_num < 0.2) {
+					temp.add(new BombTile(i+1, j+1, this));
+				}
+				else {
+					temp.add(new SafeTile(i+1, j+1, this));
+				}
+			}
+			this.tileList.add(temp);
+		}
 	}
 
 	/**
 	 * Metode for å hente ut hvilken Tile som er på en gitt posisjon.
+     * Kaster unntak dersom x eller y er utenfor brettet.
 	 * @param x x-posisjonen som skal sjekkes
 	 * @param y y-posisjonen som skal sjekkes
 	 * @return tilen som ble funnet
 	 */
 	public Tile getTile(final int x, final int y) {
-		// Merk: Legg til validering
-		return null;
+		if (x < 1 || x > this.size || y < 1 || y > this.size) {
+			throw new IllegalArgumentException("Kan ikke hente ut Tiles utenfor brettet");
+		}
+		return this.tileList.get(y-1).get(x-1);
+	}
+
+	@Override
+	public String toString() {
+		String temp = "";
+		for (List<Tile> row : this.tileList) {
+			temp += row.toString() + "\n";
+		}
+		return temp;
 	}
 
 	/**
