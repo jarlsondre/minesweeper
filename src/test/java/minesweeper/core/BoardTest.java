@@ -1,19 +1,51 @@
 package minesweeper.core;
 
-import org.junit.jupiter.api.Assertions;
+import java.util.Iterator;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
 public class BoardTest {
 
     @Test
-    public void testMakeBoard() {
-        Board board = new Board(5);
-        System.out.println(board);
+    public void testGetTile() {
+    	Board board = new Board(10);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             board.getTile(0, 0);
         });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            board.getTile(11, 11);
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            board.getTile(100, 100);
+        });
+        try {
+        	board.getTile(1, 1);
+        	board.getTile(10, 10);
+        }catch (Exception e) {
+        	Assertions.fail("Får ikke hentet tiles på brettet.");
+        }
+    }
+    
+    @Test
+    public void testBoardIterator() {
+    	Board board = new Board(10);
+    	Iterator<Tile> it = board.iterator();
+    	int counter = 0;
+    	while(it.hasNext()) {
+    		it.next();
+    		counter += 1;
+    	}
+    	Assertions.assertEquals(10*10, counter);
+    	board = new Board(15);
+    	it = board.iterator();
+    	counter = 0;
+    	while(it.hasNext()) {
+    		it.next();
+    		counter += 1;
+    	}
+    	Assertions.assertEquals(15*15, counter);
+    	 
     }
 }
