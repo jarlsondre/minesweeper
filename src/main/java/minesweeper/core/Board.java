@@ -100,7 +100,9 @@ public class Board implements Iterable<Tile> {
 					this.currentY += 1;
 					this.currentX = 1;
 				}
-				this.currentX += 1;
+				else {
+					this.currentX += 1;					
+				}
 				return nextTile;
 			}
 		};
