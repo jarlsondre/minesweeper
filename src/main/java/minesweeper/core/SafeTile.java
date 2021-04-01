@@ -9,7 +9,7 @@ import java.util.Collection;
  */
 public class SafeTile extends Tile {
 
-	private Collection<Tile> listeners = new ArrayList<Tile>();
+	private Collection<Tile> adjacentSafeTiles = new ArrayList<Tile>();
 
 	/**
 	 * Konstruktør før å lage en SafeTile.
@@ -38,25 +38,14 @@ public class SafeTile extends Tile {
 	 */
 	public int getSurroundingBombAmount() {
 		int bombs = 0;
-		for(int i = 0; i < 3; i++) {
-			try {
-				if(this.board.getTile(this.x - 1 + i, this.y - 1) instanceof BombTile) {
+		for(int i = -1; i < 2; i++) {
+			for(int j = -1; j < 2; j++) {
+				if(this.x + i > 0 && this.x + i < this.board.getSize() &&
+						this.y + j > 0 && this.y + j < this.board.getSize() && 
+						(this.board.getTile(this.x + i, this.y + j) instanceof BombTile)) {
 					bombs += 1;
-				}				
-			} catch (IllegalArgumentException e) {continue;}
-		}
-		for(int i = 0; i < 3; i++) {
-			try {
-				if(this.board.getTile(this.x - 1 + i, this.y - 1) instanceof BombTile) {
-					bombs += 1;
-				}				
-			} catch (IllegalArgumentException e) {continue;}
-		}
-		if(this.x - 1 > 0 && board.getTile(this.x - 1, this.y) instanceof BombTile) {
-			bombs+= 1;
-		}
-		if(this.x + 1 < this.board.getSize() + 1 && board.getTile(this.x + 1, this.y) instanceof BombTile) {
-			bombs += 1;
+				}
+			}			
 		}
 		return bombs;
 	}

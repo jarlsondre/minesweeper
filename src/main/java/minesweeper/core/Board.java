@@ -18,8 +18,8 @@ public class Board implements Iterable<Tile> {
 	 * @param size størrelsen på brettet i en dimensjon.
 	 */
 	public Board(int size) {
-		if(size < 0) {
-			throw new IllegalStateException("Brettet kan ikke ha negativ størrelse");
+		if(size < 2) {
+			throw new IllegalArgumentException("Brettet kan ikke ha mindre størrelse enn 2");
 		}
 		this.size = size;
 		this.makeBoard();
@@ -62,7 +62,9 @@ public class Board implements Iterable<Tile> {
 	 */
 	public Tile getTile(final int x, final int y) {
 		if (x < 1 || x > this.size || y < 1 || y > this.size) {
-			throw new IllegalArgumentException("Kan ikke hente ut Tiles utenfor brettet");
+			String s = "(" + x + ", " + y + ")";
+			throw new IllegalArgumentException("Kan ikke hente ut til på " 
+			+ s + ", tilen ligger utenfor brettet.");
 		}
 		return this.tileList.get(y-1).get(x-1);
 	}
