@@ -37,7 +37,28 @@ public class SafeTile extends Tile {
 	 * @return et heltall, antallet bomber rundt Tilen
 	 */
 	public int getSurroundingBombAmount() {
-		return 0;
+		int bombs = 0;
+		for(int i = 0; i < 3; i++) {
+			try {
+				if(this.board.getTile(this.x - 1 + i, this.y - 1) instanceof BombTile) {
+					bombs += 1;
+				}				
+			} catch (IllegalArgumentException e) {continue;}
+		}
+		for(int i = 0; i < 3; i++) {
+			try {
+				if(this.board.getTile(this.x - 1 + i, this.y - 1) instanceof BombTile) {
+					bombs += 1;
+				}				
+			} catch (IllegalArgumentException e) {continue;}
+		}
+		if(this.x - 1 > 0 && board.getTile(this.x - 1, this.y) instanceof BombTile) {
+			bombs+= 1;
+		}
+		if(this.x + 1 < this.board.getSize() + 1 && board.getTile(this.x - 1, this.y) instanceof BombTile) {
+			bombs += 1;
+		}
+		return bombs;
 	}
 
 }

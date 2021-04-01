@@ -26,6 +26,14 @@ public class Board implements Iterable<Tile> {
 	 */
 	private void makeBoard() {
 	}
+	
+	/**
+	 * Metode som retunerer størrelsen på brettet.
+	 * @return Størrelsen på brettet i en dimensjon.
+	 * */
+	public int getSize() {
+		return this.tileList.size();
+	}
 
 	/**
 	 * Metode for å hente ut hvilken Tile som er på en gitt posisjon.
