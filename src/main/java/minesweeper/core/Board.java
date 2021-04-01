@@ -11,13 +11,16 @@ import java.util.Random;
  */
 public class Board implements Iterable<Tile> {
 	private final int size;
-	private List<List<Tile>> tileList = new ArrayList<List<Tile>>();
+	private final List<List<Tile>> tileList = new ArrayList<List<Tile>>();
 
 	/**
 	 * Konstruktør til brettet.
 	 * @param size størrelsen på brettet i en dimensjon.
 	 */
 	public Board(int size) {
+		if(size < 0) {
+			throw new IllegalStateException("Brettet kan ikke ha negativ størrelse");
+		}
 		this.size = size;
 		this.makeBoard();
 	}

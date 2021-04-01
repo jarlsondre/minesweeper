@@ -7,6 +7,17 @@ import org.junit.jupiter.api.Test;
 
 
 public class BoardTest {
+	
+	@Test
+	public void testConstructor() {
+		Board board = new Board(13);
+		Assertions.assertEquals(13, board.getSize());
+		board = new Board(0);
+		Assertions.assertEquals(0, board.getSize());
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+            new Board(-10);
+        });
+	}
 
     @Test
     public void testGetTile() {
