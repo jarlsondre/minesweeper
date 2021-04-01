@@ -1,5 +1,7 @@
 package minesweeper.core;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Iterator;
 
 import org.junit.jupiter.api.Assertions;
@@ -79,7 +81,30 @@ public class BoardTest {
     		}
     	}
     	double p = ((double) counter)/(board.getSize() * board.getSize());
-    	System.out.println(p);
     	Assertions.assertTrue(p > 0.1 && p < 0.3);
+    }
+    
+    @Test
+    public void testTileListeners() {
+    	Board board = new Board(10);
+    	SafeTile tile = null;
+    	for(Tile t : board) {
+    		if(t instanceof SafeTile) {
+    			tile = (SafeTile) t;
+    		}
+    	}
+    	tile.open();
+    	this.checkListenersOpen(tile, board);  	
+    }
+    
+    private void checkListenersOpen(Tile tile, Board board) {
+    	for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if (tile.x + i > 0 && tile.x + i < board.getSize() && tile.y + j > 0 && tile.y + j < board.getSize()
+						&& !(i == 0 && j == 0) && board.getTile(tile.x + i, tile.y + j) instanceof SafeTile) {
+					assertTrue(tile.isOpened());
+				}
+			}
+		}
     }
 }

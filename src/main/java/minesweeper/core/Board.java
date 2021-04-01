@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Klasse som skal representere brettet. Dette skal inneholde
- * en liste med Tiles.
+ * Klasse som skal representere brettet. Dette skal inneholde en liste med
+ * Tiles.
  */
 public class Board implements Iterable<Tile> {
 	private final int size;
@@ -15,18 +15,24 @@ public class Board implements Iterable<Tile> {
 
 	/**
 	 * Konstruktør til brettet.
+	 * 
 	 * @param size størrelsen på brettet i en dimensjon.
 	 */
 	public Board(int size) {
-		if(size < 2) {
+		if (size < 2) {
 			throw new IllegalArgumentException("Brettet kan ikke ha mindre størrelse enn 2");
 		}
 		this.size = size;
 		this.makeBoard();
+		for (Tile t : this) {
+			if (t instanceof SafeTile) {
+				this.addListenersToTile((SafeTile) t);
+			}
+		}
 	}
 
 	/**
-	 * Metode for å lage brettet.
+	 * Hjelpemetode for å lage brettet.
 	 */
 	private void makeBoard() {
 		for (int i = 0; i < size; i++) {
@@ -35,27 +41,43 @@ public class Board implements Iterable<Tile> {
 				Random rand = new Random();
 				float rand_num = rand.nextFloat();
 				if (rand_num < 0.2) {
-					temp.add(new BombTile(i+1, j+1, this));
-				}
-				else {
-					temp.add(new SafeTile(i+1, j+1, this));
+					temp.add(new BombTile(i + 1, j + 1, this));
+				} else {
+					temp.add(new SafeTile(i + 1, j + 1, this));
 				}
 			}
 			this.tileList.add(temp);
 		}
 	}
-	
+
+	/**
+	 * Hjelpemetode som legger til alle lytterne tilhørende en tile.
+	 * @param tile tilen som skal få tildelt lyttere
+	 * */
+	private void addListenersToTile(SafeTile tile) {
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if (tile.x + i > 0 && tile.x + i < this.getSize() && tile.y + j > 0 && tile.y + j < this.getSize()
+						&& !(i == 0 && j == 0) && this.getTile(tile.x + i, tile.y + j) instanceof SafeTile) {
+					tile.addListener((SafeTile) this.getTile(tile.x + i, tile.y + j));
+				}
+			}
+		}
+	}
+
 	/**
 	 * Metode som retunerer størrelsen på brettet.
+	 * 
 	 * @return Størrelsen på brettet i en dimensjon.
-	 * */
+	 */
 	public int getSize() {
 		return this.tileList.size();
 	}
 
 	/**
-	 * Metode for å hente ut hvilken Tile som er på en gitt posisjon.
-     * Kaster unntak dersom x eller y er utenfor brettet.
+	 * Metode for å hente ut hvilken Tile som er på en gitt posisjon. Kaster unntak
+	 * dersom x eller y er utenfor brettet.
+	 * 
 	 * @param x x-posisjonen som skal sjekkes
 	 * @param y y-posisjonen som skal sjekkes
 	 * @return tilen som ble funnet
@@ -63,10 +85,9 @@ public class Board implements Iterable<Tile> {
 	public Tile getTile(final int x, final int y) {
 		if (x < 1 || x > this.size || y < 1 || y > this.size) {
 			String s = "(" + x + ", " + y + ")";
-			throw new IllegalArgumentException("Kan ikke hente ut til på " 
-			+ s + ", tilen ligger utenfor brettet.");
+			throw new IllegalArgumentException("Kan ikke hente ut til på " + s + ", tilen ligger utenfor brettet.");
 		}
-		return this.tileList.get(y-1).get(x-1);
+		return this.tileList.get(y - 1).get(x - 1);
 	}
 
 	@Override
@@ -79,9 +100,9 @@ public class Board implements Iterable<Tile> {
 	}
 
 	/**
-	 * Iterator som blir brukt for å iterere gjennom brettet.
-	 * Brettet blir iterert gjennom rad for rad fra (1, 1)
-	 * til (size, size)
+	 * Iterator som blir brukt for å iterere gjennom brettet. Brettet blir iterert
+	 * gjennom rad for rad fra (1, 1) til (size, size)
+	 * 
 	 * @return Iteratoren som brukes til å iterere
 	 */
 	@Override
@@ -93,6 +114,7 @@ public class Board implements Iterable<Tile> {
 
 			/**
 			 * Sjekker om brettet har flere tiles å iterere gjennom
+			 * 
 			 * @return boolsk verdi som forteller om det finnes flere tiles
 			 */
 			@Override
@@ -103,6 +125,7 @@ public class Board implements Iterable<Tile> {
 
 			/**
 			 * Metode som gir ut neste Tile i brettet. Itererer rad for rad.
+			 * 
 			 * @return neste Tile
 			 */
 			@Override
@@ -112,9 +135,8 @@ public class Board implements Iterable<Tile> {
 				if (this.currentX == size) {
 					this.currentY += 1;
 					this.currentX = 1;
-				}
-				else {
-					this.currentX += 1;					
+				} else {
+					this.currentX += 1;
 				}
 				return nextTile;
 			}

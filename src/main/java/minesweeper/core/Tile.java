@@ -9,6 +9,7 @@ public abstract class Tile {
 
 	protected int x;
 	protected int y;
+	protected boolean opened;
 
 	protected Board board;
 
@@ -38,6 +39,21 @@ public abstract class Tile {
 	 */
 	public int getY() {
 		return this.y;
+	}
+	
+	/**
+	 * Åpner tilen
+	 * */
+	public void open() {
+		this.opened = true;
+	}
+	
+	/**
+	 * Metode som sjekker om tilen er åpnet
+	 * @return true hvis tilen er åpnet
+	 * */
+	public boolean isOpened() {
+		return this.opened;
 	}
 
 	/**
