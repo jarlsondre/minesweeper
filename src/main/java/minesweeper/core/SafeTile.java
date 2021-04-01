@@ -55,7 +55,7 @@ public class SafeTile extends Tile {
 		if(this.x - 1 > 0 && board.getTile(this.x - 1, this.y) instanceof BombTile) {
 			bombs+= 1;
 		}
-		if(this.x + 1 < this.board.getSize() + 1 && board.getTile(this.x - 1, this.y) instanceof BombTile) {
+		if(this.x + 1 < this.board.getSize() + 1 && board.getTile(this.x + 1, this.y) instanceof BombTile) {
 			bombs += 1;
 		}
 		return bombs;

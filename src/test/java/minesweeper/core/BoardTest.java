@@ -57,6 +57,20 @@ public class BoardTest {
     		counter += 1;
     	}
     	Assertions.assertEquals(15*15, counter);
-    	 
+    }
+    
+    @Test
+    public void testAmountOfBombs() {
+    	Board board = new Board(15);
+    	int counter = 0;
+    	for(Tile t : board) {
+    		if(t instanceof BombTile) {
+    			counter += 1;
+    		}
+    	}
+    	double p = ((double) counter)/(board.getSize() * board.getSize());
+    	// TODO Fjern den under her
+    	System.out.println(p);
+    	Assertions.assertTrue(p > 0.1 && p < 0.3);
     }
 }
