@@ -101,8 +101,8 @@ public class BoardTest {
     private void checkListenersOpen(Tile tile, Board board) {
     	for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if (tile.x + i > 0 && tile.x + i < board.getSize() && tile.y + j > 0 && tile.y + j < board.getSize()
-						&& !(i == 0 && j == 0) && board.getTile(tile.x + i, tile.y + j) instanceof SafeTile) {
+				if (tile.x + j > 0 && tile.x + j < board.getSize() + 1 && tile.y + i > 0 && tile.y + i < board.getSize() + 1
+						&& !(i == 0 && j == 0) && board.getTile(tile.x + j, tile.y + i) instanceof SafeTile) {
 					assertTrue(tile.isOpened());
 				}
 			}

@@ -41,9 +41,9 @@ public class Board implements Iterable<Tile> {
 				Random rand = new Random();
 				float rand_num = rand.nextFloat();
 				if (rand_num < 0.2) {
-					temp.add(new BombTile(i + 1, j + 1, this));
+					temp.add(new BombTile(j + 1, i + 1, this));
 				} else {
-					temp.add(new SafeTile(i + 1, j + 1, this));
+					temp.add(new SafeTile(j + 1, i + 1, this));
 				}
 			}
 			this.tileList.add(temp);
@@ -57,9 +57,9 @@ public class Board implements Iterable<Tile> {
 	private void addListenersToTile(SafeTile tile) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if (tile.x + i > 0 && tile.x + i < this.getSize() && tile.y + j > 0 && tile.y + j < this.getSize()
-						&& !(i == 0 && j == 0) && this.getTile(tile.x + i, tile.y + j) instanceof SafeTile) {
-					tile.addListener((SafeTile) this.getTile(tile.x + i, tile.y + j));
+				if (tile.x + j > 0 && tile.x + j < this.getSize() + 1 && tile.y + i > 0 && tile.y + i < this.getSize() + 1
+						&& !(j == 0 && i == 0) && this.getTile(tile.x + j, tile.y + i) instanceof SafeTile) {
+					tile.addListener((SafeTile) this.getTile(tile.x + j, tile.y + i));
 				}
 			}
 		}

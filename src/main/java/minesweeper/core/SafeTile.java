@@ -42,9 +42,9 @@ public class SafeTile extends Tile implements AdjacentListener {
 		int bombs = 0;
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if (this.x + i > 0 && this.x + i < this.board.getSize() && this.y + j > 0
-						&& this.y + j < this.board.getSize()
-						&& (this.board.getTile(this.x + i, this.y + j) instanceof BombTile)) {
+				if (this.x + j > 0 && this.x + j < this.board.getSize() + 1 && this.y + i > 0
+						&& this.y + i < this.board.getSize() + 1
+						&& (this.board.getTile(this.x + j, this.y + i) instanceof BombTile)) {
 					bombs += 1;
 				}
 			}
@@ -58,7 +58,9 @@ public class SafeTile extends Tile implements AdjacentListener {
 	@Override
 	public void open() {
 		super.open();
-		fireTileOpened();
+		if(this.getSurroundingBombAmount() == 0) {
+			fireTileOpened();			
+		}
 	}
 
 	/**
