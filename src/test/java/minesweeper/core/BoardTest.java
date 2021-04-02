@@ -90,20 +90,22 @@ public class BoardTest {
     	Board board = new Board(10);
     	SafeTile tile = null;
     	for(Tile t : board) {
-    		if(t instanceof SafeTile) {
+    		if(t instanceof SafeTile && !t.isOpened() && ((SafeTile) t).getSurroundingBombAmount() == 0) {
     			tile = (SafeTile) t;
+    			tile.open();
+    	    	this.checkListenersOpen(tile, board);
     		}
-    	}
-    	tile.open();
-    	this.checkListenersOpen(tile, board);  	
+    	}  	
     }
     
     private void checkListenersOpen(Tile tile, Board board) {
     	for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if (tile.x + j > 0 && tile.x + j < board.getSize() + 1 && tile.y + i > 0 && tile.y + i < board.getSize() + 1
-						&& !(i == 0 && j == 0) && board.getTile(tile.x + j, tile.y + i) instanceof SafeTile) {
-					assertTrue(tile.isOpened());
+						&& !(i == 0 && j == 0) && board.getTile(tile.x + j, tile.y + i) instanceof SafeTile
+						&& ((SafeTile) board.getTile(tile.x + j, tile.y + i)).getSurroundingBombAmount() == 0) {
+					SafeTile t = (SafeTile) board.getTile(tile.x + j, tile.y + i);
+					assertTrue(board.getTile(tile.x + j, tile.y + i).isOpened());
 				}
 			}
 		}
