@@ -1,5 +1,8 @@
 package minesweeper.fxui;
 
+import java.time.LocalTime;
+import static java.time.temporal.ChronoUnit.SECONDS;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,6 +18,7 @@ public class MainController {
 	
 	// Core-komponenter
 	private Board board;
+	private LocalTime start;
 
 	// FXML-komponenter
 	@FXML
@@ -22,6 +26,9 @@ public class MainController {
 
 	@FXML
 	Label totalBombsLabel;
+	
+	@FXML
+	Label text;
 
 	/**
 	 * konstruktør for kontrolleren. 
@@ -37,6 +44,7 @@ public class MainController {
 	@FXML
     public void initialize() {
 		this.initializeBoard();
+		this.start = LocalTime.now();
 	}
 	
 	/**
@@ -68,6 +76,8 @@ public class MainController {
 			this.Vbox.getChildren().add(hBox);
 		}
 		int totalBombs = this.board.getSize()*this.board.getSize() - this.board.getSafeTilesAmount();
+		this.text.setText("Antall bomber:");
+		this.totalBombsLabel.setVisible(true);
 		totalBombsLabel.setText(Integer.toString(totalBombs));
 	}
 
@@ -134,6 +144,7 @@ public class MainController {
 		this.Vbox.getChildren().clear();
 		this.board = new Board(10);
 		this.initializeBoard();
+		this.start = LocalTime.now();
 	}
 	
 	/**
@@ -141,6 +152,9 @@ public class MainController {
 	 * */
 	private void gameOver() {
 		this.disableAll();
+		long difference = this.start.until(LocalTime.now(), SECONDS);
+		this.text.setText("Du tapte etter:\n" + difference + " sekunder");
+		this.totalBombsLabel.setVisible(false);
 	}
 	
 	/**
@@ -148,5 +162,8 @@ public class MainController {
 	 * */
 	private void winGame() {
 		this.disableAll();
+		long difference = this.start.until(LocalTime.now(), SECONDS);
+		this.text.setText("Du vant etter:\n" + difference + " sekunder");
+		this.totalBombsLabel.setVisible(false);
 	}
 }
