@@ -65,11 +65,17 @@ public class SafeTile extends Tile implements AdjacentListener {
 
 	/**
 	 * Metode som blir kalt av en nabo som denne tilen lytter på.
+	 * Naboen varsler om at denne tilen skal åpnes
 	 */
 	@Override
 	public void adjacentOpened(SafeTile safeTile) {
-		if (!this.opened && this.getSurroundingBombAmount() == 0) {
+		int amount = this.getSurroundingBombAmount();
+		if (!this.opened && amount == 0) {
 			this.open();
+			return;
+		}
+		if(!this.opened) {
+			super.open();
 		}
 	}
 
