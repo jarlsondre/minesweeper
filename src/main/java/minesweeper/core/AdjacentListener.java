@@ -1,5 +1,5 @@
 package minesweeper.core;
 
 public interface AdjacentListener {
-	public void adjacentOpened(SafeTile safeTile);
+	public void adjacentOpened();
 }

@@ -26,4 +26,9 @@ public class BombTile extends Tile {
 	public boolean hasBomb() {
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "B";
+	}
 }

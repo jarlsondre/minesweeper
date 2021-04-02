@@ -1,32 +1,33 @@
 package minesweeper.fxui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import minesweeper.core.Board;
 import minesweeper.core.BombTile;
-import minesweeper.core.SafeTile;
 import minesweeper.core.Tile;
 
 public class MainController {
 	
 	// Core-komponenter
 	private Board board;
-	private int openedTiles;
-	
+
 	// FXML-komponenter
 	@FXML
 	VBox Vbox;
-	
+
+	@FXML
+	Label totalBombsLabel;
+
 	/**
 	 * konstruktør for kontrolleren. 
 	 * Lager brettet i core.
 	 * */
 	public MainController() {
-		this.board = new Board(10);
 	}
 	
 	/**
@@ -34,68 +35,96 @@ public class MainController {
 	 * */
 	@FXML
     public void initialize() {
-		this.makeBoard();
+		this.board = new Board(10);
+		this.initializeBoard();
 	}
-	
-	private void makeBoard() {
-		// System.out.println(this.board);
-		this.Vbox.getChildren().clear();
-		for(int i = 1; i < this.board.getSize() + 1; i++) {
-			HBox Hbox = new HBox();
-			for(int j = 1; j < this.board.getSize() + 1; j++) {
-				Button button = new Button();
-				
-				// Legger til eventhandler
-				Tile tile = this.board.getTile(j, i);
-				if(tile.isOpened()) {
-					// TODO Endre dette?
-					if(tile instanceof SafeTile && ((SafeTile) tile).getSurroundingBombAmount() > 0) {
-						button.setText(((SafeTile) tile).getSurroundingBombAmount() + "");
+
+	private void initializeBoard() {
+		for (int i = 1; i < this.board.getSize() + 1; i++) {
+			HBox hBox = new HBox();
+			for (int j = 1; j < this.board.getSize() + 1; j++) {
+				Button tileButton = new Button();
+				tileButton.setId(j + "," + i);
+				tileButton.setPrefHeight(50);
+				tileButton.setPrefWidth(50);
+				tileButton.setOnMouseClicked(e -> {
+					if (e.getButton() == MouseButton.SECONDARY) {
+						if (tileButton.getText().equals("F")) {
+							tileButton.setText("");
+						} else {
+							tileButton.setText("F");
+						}
 					}
 					else {
-						button.setText(tile.toString());						
+						this.handleTileClick((Button) e.getSource());
 					}
-				}
-				else {
-					button.setOnAction(e -> this.handleButton((Button) e.getSource()));					
-				}
-				button.setId(j + "," + i);
-				button.setPrefHeight(50);
-				button.setPrefWidth(50);
-				Hbox.getChildren().add(button);
+				});
+
+				hBox.getChildren().add(tileButton);
 			}
-			this.Vbox.getChildren().add(Hbox);
+			this.Vbox.getChildren().add(hBox);
 		}
+		int totalBombs = this.board.getSize()*this.board.getSize() - this.board.getSafeTilesAmount();
+		totalBombsLabel.setText(Integer.toString(totalBombs));
+	}
+
+	private void updateBoard() {
+	    // Går gjennom hver tile og sjekker om den har blitt åpnet.
+		int openedTiles = 0;
+		for (Tile tile : board) {
+			if (tile.isOpened()) {
+				openedTiles += 1;
+				int x_cor = tile.getX();
+				int y_cor = tile.getY();
+				Button tileButton = (Button) this.Vbox.lookup("#" + x_cor + "," + y_cor);
+				tileButton.setText(tile.toString());
+				tileButton.setDisable(true);
+				// Dersom man åpner en BombTile taper man
+				if (tile instanceof BombTile) {
+					this.gameOver();
+					return;
+				}
+			}
+		}
+
+		// Dersom man har åpnet riktig antall tiles har man vunnet
+		if (this.board.getSafeTilesAmount() == openedTiles) {
+			this.winGame();
+			return;
+		}
+	}
+
+	private void handleTileClick(Button button) {
+		String[] id = button.getId().split(",");
+		int x_cor = Integer.parseInt(id[0]);
+		int y_cor = Integer.parseInt(id[1]);
+		Tile tile = board.getTile(x_cor, y_cor);
+		tile.open();
+		this.updateBoard();
+	}
+
+	private void disableAll() {
+		for (Node vboxChild : this.Vbox.getChildren()) {
+			HBox hbox = (HBox) vboxChild;
+			for (Node hboxChild : hbox.getChildren()) {
+				Button button = (Button) hboxChild;
+				button.setDisable(true);
+			}
+		}
+	}
+
+	@FXML
+	private void handleNewGame() {
+		this.Vbox.getChildren().clear();
+		this.board = new Board(10);
+		this.initializeBoard();
 	}
 	
 	private void gameOver() {
-		//TODO
+		this.disableAll();
 	}
 	
 	private void winGame() {
-		//TODO
+		this.disableAll();
 	}
-
-	/**
-	 * Håndterer knappetrykk.
-	 * Åpner tilsvarende tile i core-brettet.
-	 * @param button knappen som har blitt trykket på
-	 * */
-    @FXML
-    private void handleButton(Button button) {
-    	String[] id = button.getId().split(",");
-    	int x = Integer.parseInt(id[0]);
-    	int y = Integer.parseInt(id[1]);
-    	// System.out.println("(" + id[0] + ", " + id[1] + ")");
-    	Tile tile = this.board.getTile(x, y);
-    	if(tile instanceof BombTile) {
-			this.gameOver();
-		}
-    	tile.open();
-    	this.openedTiles += 1;
-    	if(this.board.getSafeTilesAmount() == this.openedTiles) {
-    		this.winGame();
-    	}
-    	this.makeBoard();
-    }
 }

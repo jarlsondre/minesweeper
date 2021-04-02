@@ -68,7 +68,7 @@ public class SafeTile extends Tile implements AdjacentListener {
 	 * Naboen varsler om at denne tilen skal åpnes
 	 */
 	@Override
-	public void adjacentOpened(SafeTile safeTile) {
+	public void adjacentOpened() {
 		int amount = this.getSurroundingBombAmount();
 		if (!this.opened && amount == 0) {
 			this.open();
@@ -91,8 +91,13 @@ public class SafeTile extends Tile implements AdjacentListener {
 	 */
 	private void fireTileOpened() {
 		for (SafeTile t : this.adjacentSafeTiles) {
-			t.adjacentOpened(this);
+			t.adjacentOpened();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return Integer.toString(this.getSurroundingBombAmount());
 	}
 
 }

@@ -16,6 +16,7 @@ public class App extends Application {
     @Override
     public void start(final Stage stage) throws IOException {
         Scene scene = new Scene(new FXMLLoader(App.class.getResource("startScreen.fxml")).load());
+        stage.setTitle("Minesweeper");
         stage.setScene(scene);
         stage.show();
     }
