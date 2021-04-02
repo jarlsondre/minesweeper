@@ -64,7 +64,11 @@ public abstract class Tile {
 
 	@Override
 	public String toString() {
-		return (this.hasBomb() ? "B" : "0");
+		// return (this.hasBomb() ? "B" : "0");
+		if(this.isOpened()) {
+			return "1";
+		}
+		return "0";
 	}
 
 }

@@ -73,6 +73,20 @@ public class Board implements Iterable<Tile> {
 	public int getSize() {
 		return this.tileList.size();
 	}
+	
+	/**
+	 * Metode som gir ut antall SafeTiles brettet inndeholder.
+	 * @return Antall SafeTiles
+	 * */
+	public int getSafeTilesAmount() {
+		int counter = 0;
+		for(Tile t : this) {
+			if(t instanceof SafeTile) {
+				counter += 1;
+			}
+		}
+		return counter;
+	}
 
 	/**
 	 * Metode for å hente ut hvilken Tile som er på en gitt posisjon. Kaster unntak
