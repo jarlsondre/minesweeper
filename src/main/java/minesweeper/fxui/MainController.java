@@ -28,17 +28,20 @@ public class MainController {
 	 * Lager brettet i core.
 	 * */
 	public MainController() {
+		this.board = new Board(10);
 	}
 	
 	/**
-	 * initialiserer brettet med knapper
+	 * initialiserer gui-brettet med knapper
 	 * */
 	@FXML
     public void initialize() {
-		this.board = new Board(10);
 		this.initializeBoard();
 	}
-
+	
+	/**
+	 * Hjelpemetode for å initialisere gui-brettet med knapper
+	 * */
 	private void initializeBoard() {
 		for (int i = 1; i < this.board.getSize() + 1; i++) {
 			HBox hBox = new HBox();
@@ -68,6 +71,9 @@ public class MainController {
 		totalBombsLabel.setText(Integer.toString(totalBombs));
 	}
 
+	/**
+	 * Hjelpemetode for å oppdatere gui-brettet
+	 * */
 	private void updateBoard() {
 	    // Går gjennom hver tile og sjekker om den har blitt åpnet.
 		int openedTiles = 0;
@@ -94,6 +100,10 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Hjelpemetode for å åpne tiles
+	 * @param button knappen som har blitt trykt på
+	 * */
 	private void handleTileClick(Button button) {
 		String[] id = button.getId().split(",");
 		int x_cor = Integer.parseInt(id[0]);
@@ -103,6 +113,9 @@ public class MainController {
 		this.updateBoard();
 	}
 
+	/**
+	 * Hjelpemetode for å deaktivere alle gui-knappene
+	 * */
 	private void disableAll() {
 		for (Node vboxChild : this.Vbox.getChildren()) {
 			HBox hbox = (HBox) vboxChild;
@@ -113,6 +126,9 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Hjelpemetode som lager et nytt game
+	 * */
 	@FXML
 	private void handleNewGame() {
 		this.Vbox.getChildren().clear();
@@ -120,10 +136,16 @@ public class MainController {
 		this.initializeBoard();
 	}
 	
+	/**
+	 * Hjelpemetode for å håndtere at man trykker på en bombe
+	 * */
 	private void gameOver() {
 		this.disableAll();
 	}
 	
+	/**
+	 * Hjelpemetode for å håndtere at man vinner spillet
+	 * */
 	private void winGame() {
 		this.disableAll();
 	}
