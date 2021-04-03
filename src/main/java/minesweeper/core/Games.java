@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import minesweeper.filehandling.FileHandler;
+import minesweeper.filehandling.GameFileHandler;
+
 
 /**
  * Klasse som tar vare på det beste spillet for alle spillerne 
@@ -11,14 +14,16 @@ import java.util.Map;
 public class Games {
 	
 	// Poengene til hver spiller
-	private Map<String, Integer> players;
+	private Map<String, String> players;
+	private FileHandler fileHandler;
 	
 	/**
 	 * Konstruktør for game. 
 	 * Leser inn tidligere spill fra fil.
 	 * */
 	public Games() {
-		this.players = new HashMap<String, Integer>();
+		this.players = new HashMap<String, String>();
+		this.fileHandler = new GameFileHandler();
 		this.readOldGames();
 	}
 	
@@ -26,7 +31,12 @@ public class Games {
 	 * Hjelpemetode for å lese inn gamle spill
 	 * */
 	private void readOldGames() {
-		// TODO
+		String oldGames = this.fileHandler.readFromFile("games.txt");
+		String[] games = oldGames.split(",");
+		for(String game : games) {
+			String[] info = game.split(":");
+			this.players.put(info[0].strip(), info[1].strip());
+		}
 	}
 	
 	/**
