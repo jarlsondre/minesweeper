@@ -1,13 +1,10 @@
 package minesweeper.filehandling;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
 
@@ -24,12 +21,12 @@ public class GameFileHandler implements FileHandler {
 			Reader reader = new InputStreamReader(in, "UTF-8");
 			char[] chars = new char[(int) file.length()];
 	        reader.read(chars);
-	        games = new String(chars);			
+	        games = new String(chars);	
+	        reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
         return games;
-		
 	}
 
 	@Override
@@ -40,7 +37,7 @@ public class GameFileHandler implements FileHandler {
 	
 	
 	public static void main(String[] args) {
-		// System.out.println("hei");
+		// test
 		GameFileHandler f = new GameFileHandler();
 		System.out.println(f.readFromFile("games.txt"));
 	}

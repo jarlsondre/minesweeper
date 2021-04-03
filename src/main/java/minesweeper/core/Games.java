@@ -1,8 +1,10 @@
 package minesweeper.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import minesweeper.filehandling.FileHandler;
 import minesweeper.filehandling.GameFileHandler;
@@ -69,7 +71,18 @@ public class Games {
 	 * @return En liste med tupler for hvert spill
 	 * */
 	public Collection<String[]> getPlayersResults() {
-		//TODO
-        return null;
+		Collection<String[]> col = new ArrayList<String[]>();
+		for(Entry<String, String> player : this.players.entrySet()) {
+			String[] s = {player.getKey(), player.getValue()}; 
+			col.add(s);
+		}
+        return col;
+	}
+	
+	public static void main(String[] args) {
+		Games g = new Games();
+		// test
+		System.out.println(g.getPlayersResults().iterator().next()[0]);
+		System.out.println(g.getPlayersResults().iterator().next()[1]);
 	}
 }
