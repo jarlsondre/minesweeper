@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Klasse som tar vare på det beste spillet for alle spillerne 
  * */
-public class Game {
+public class Games {
 	
 	// Poengene til hver spiller
 	private Map<String, Integer> players;
@@ -17,7 +17,7 @@ public class Game {
 	 * Konstruktør for game. 
 	 * Leser inn tidligere spill fra fil.
 	 * */
-	public Game() {
+	public Games() {
 		this.players = new HashMap<String, Integer>();
 		this.readOldGames();
 	}
@@ -60,5 +60,6 @@ public class Game {
 	 * */
 	public Collection<String[]> getPlayersResults() {
 		//TODO
+        return null;
 	}
 }

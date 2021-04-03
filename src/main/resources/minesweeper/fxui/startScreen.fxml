@@ -2,11 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="657.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesweeper.fxui.MainController">
+<AnchorPane prefHeight="666.0" prefWidth="1238.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesweeper.fxui.MainController">
    <children>
       <VBox fx:id="Vbox" layoutX="85.0" layoutY="90.0" prefHeight="390.0" prefWidth="587.0" />
       <Label layoutX="270.0" layoutY="14.0" text="Minesweeper!">
@@ -17,5 +18,11 @@
       <Button layoutX="347.0" layoutY="585.0" mnemonicParsing="false" onAction="#handleNewGame" text="Nytt spill" />
       <Label fx:id="text" layoutX="340.0" layoutY="508.0" text="Antall bomber" />
       <Label fx:id="totalBombsLabel" layoutX="364.0" layoutY="538.0" />
+      <ScrollPane fx:id="highscoreScrollPane" layoutX="837.0" layoutY="111.0" prefHeight="390.0" prefWidth="216.0" />
+      <Label layoutX="883.0" layoutY="65.0" text="High Scores">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

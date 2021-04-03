@@ -80,8 +80,7 @@ public class BoardTest {
 				counter += 1;
 			}
 		}
-		double p = ((double) counter) / (board.getSize() * board.getSize());
-		Assertions.assertTrue(p > 0.1 && p < 0.3);
+		Assertions.assertEquals( board.getSize()*board.getSize()*(0.12), counter);
 	}
 
 	

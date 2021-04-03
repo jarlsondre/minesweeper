@@ -1,9 +1,6 @@
 package minesweeper.core;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Klasse som skal representere brettet. Dette skal inneholde en liste med
@@ -35,12 +32,29 @@ public class Board implements Iterable<Tile> {
 	 * Hjelpemetode for å lage brettet.
 	 */
 	private void makeBoard() {
+
+		// Initialiserer en 2d-liste med bare 0
+		List<List<Integer>> bombMap = new ArrayList();
+		Collections.nCopies(size, new ArrayList(Collections.nCopies(size, 0))).forEach((list) -> bombMap.add(new ArrayList(list)));
+
+		// Setter antall (12% skal være bomber)
+		int bombsNotPlaced = (int) (size*size*(0.12));
+		while (bombsNotPlaced != 0) {
+			Random random = new Random();
+			int rand_x = random.nextInt(size);
+			int rand_y = random.nextInt(size);
+			if (bombMap.get(rand_y).get(rand_x) == 0) {
+				bombMap.get(rand_y).set(rand_x, 1);
+				bombsNotPlaced -= 1;
+			}
+		}
+
+
+
 		for (int i = 0; i < size; i++) {
 			List<Tile> temp = new ArrayList<Tile>();
 			for (int j = 0; j < size; j++) {
-				Random rand = new Random();
-				float rand_num = rand.nextFloat();
-				if (rand_num < 0.2) {
+				if (bombMap.get(i).get(j) == 1) {
 					temp.add(new BombTile(j + 1, i + 1, this));
 				} else {
 					temp.add(new SafeTile(j + 1, i + 1, this));

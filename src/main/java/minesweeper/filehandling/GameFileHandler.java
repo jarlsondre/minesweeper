@@ -5,6 +5,7 @@ public class GameFileHandler implements FileHandler {
 	@Override
 	public String readFromFile(String filename) {
 		// TODO Auto-generated method stub
+        return null;
 		
 	}
 

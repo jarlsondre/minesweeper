@@ -1,17 +1,23 @@
 package minesweeper.fxui;
 
 import java.time.LocalTime;
+import java.util.Collection;
+import java.util.List;
+
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import minesweeper.core.Board;
 import minesweeper.core.BombTile;
+import minesweeper.core.Games;
 import minesweeper.core.Tile;
 
 public class MainController {
@@ -19,6 +25,7 @@ public class MainController {
 	// Core-komponenter
 	private Board board;
 	private LocalTime start;
+	private Games games;
 
 	// FXML-komponenter
 	@FXML
@@ -29,6 +36,9 @@ public class MainController {
 	
 	@FXML
 	Label text;
+
+	@FXML
+	ScrollPane highscoreScrollPane;
 
 	/**
 	 * konstruktør for kontrolleren. 
@@ -45,6 +55,22 @@ public class MainController {
     public void initialize() {
 		this.initializeBoard();
 		this.start = LocalTime.now();
+	}
+
+	@FXML
+	public void addScrollPaneElements() {
+		this.highscoreScrollPane.setContent(new VBox());
+		VBox highscoreBox = (VBox) highscoreScrollPane.getContent();
+		try {
+			Collection<String[]> highscoreList = this.games.getPlayersResults();
+			for (String[] hsElem : highscoreList) {
+				highscoreBox.getChildren().add(new Label(hsElem[0] + ": " + hsElem[1]));
+			}
+		}
+		catch (Exception e) {
+			return;
+		}
+
 	}
 	
 	/**
@@ -79,6 +105,7 @@ public class MainController {
 		this.text.setText("Antall bomber:");
 		this.totalBombsLabel.setVisible(true);
 		totalBombsLabel.setText(Integer.toString(totalBombs));
+		this.addScrollPaneElements();
 	}
 
 	/**
