@@ -1,8 +1,5 @@
 package minesweeper.core;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.Assertions;
@@ -106,7 +103,7 @@ public class BoardTest {
 			for (int j = -1; j < 2; j++) {
 				if (tile.x + j > 0 && tile.x + j < board.getSize() + 1 && tile.y + i > 0
 						&& tile.y + i < board.getSize() + 1) {
-					assertTrue(board.getTile(tile.x + j, tile.y + i).isOpened());
+					Assertions.assertTrue(board.getTile(tile.x + j, tile.y + i).isOpened());
 				}
 			}
 		}
