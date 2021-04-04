@@ -44,7 +44,7 @@ public class Games {
 	/**
 	 * Metode for å lagre alle spillene til fil 
 	 * */
-	public void saveGame() {
+	public void saveGames() {
 		String txt = "";
 		for(Entry<String, String> player : this.players.entrySet()) {
 			txt += player.getKey() +": " + player.getValue() + ",\n"; 

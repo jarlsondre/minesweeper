@@ -1,2 +1,4 @@
-Per: 60, 
+bendik: 196,
 Arne: 100,
+Petter: 196,
+Per: 60,

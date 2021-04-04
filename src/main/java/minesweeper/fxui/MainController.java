@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -25,6 +26,7 @@ public class MainController {
 	// Core-komponenter
 	private Board board;
 	private LocalTime start;
+	private int time;
 	private Games games;
 
 	// FXML-komponenter
@@ -39,6 +41,15 @@ public class MainController {
 
 	@FXML
 	ScrollPane highscoreScrollPane;
+	
+	@FXML 
+	TextField username;
+	
+	@FXML
+	Label usernameLabel;
+	
+	@FXML
+	Button submit;
 
 	/**
 	 * konstruktør for kontrolleren. 
@@ -47,6 +58,7 @@ public class MainController {
 	public MainController() {
 		this.board = new Board(10);
 		this.games = new Games();
+		this.time = -1;
 	}
 	
 	/**
@@ -56,10 +68,12 @@ public class MainController {
     public void initialize() {
 		this.initializeBoard();
 		this.addScrollPaneElements();
+		this.usernameLabel.setVisible(false);
+		this.username.setVisible(false);
+		this.submit.setVisible(false);
 		this.start = LocalTime.now();
 	}
 	
-	@FXML
 	public void addScrollPaneElements() {
 		this.highscoreScrollPane.setContent(new VBox());
 		VBox highscoreBox = (VBox) highscoreScrollPane.getContent();
@@ -67,6 +81,7 @@ public class MainController {
 		for (String[] hsElem : highscoreList) {
 			highscoreBox.getChildren().add(new Label(hsElem[0] + ": " + hsElem[1]));
 		}
+		highscoreBox.setSpacing(10);
 	}
 	
 	/**
@@ -128,7 +143,6 @@ public class MainController {
 		// Dersom man har åpnet riktig antall tiles har man vunnet
 		if (this.board.getSafeTilesAmount() == openedTiles) {
 			this.winGame();
-			return;
 		}
 	}
 
@@ -157,6 +171,22 @@ public class MainController {
 			}
 		}
 	}
+	
+	@FXML
+	private void handleSubmitGame() {
+		if(this.time == -1) {
+			throw new IllegalStateException("Må ha vunnet et spill før man kan registrere spillet");
+		}
+		if(this.username.getText().isBlank()) {
+			this.usernameLabel.setText("Du må srkive inn et gyldig brukernavn!");
+			return;
+		}
+		String username = this.username.getText();
+		this.games.registerPlay(username, this.time);
+		this.games.saveGames();
+		this.addScrollPaneElements();
+		this.handleNewGame();
+	}
 
 	/**
 	 * Hjelpemetode som lager et nytt game
@@ -167,6 +197,10 @@ public class MainController {
 		this.board = new Board(10);
 		this.initializeBoard();
 		this.start = LocalTime.now();
+		this.time = -1;
+		this.usernameLabel.setVisible(false);
+		this.username.setVisible(false);
+		this.submit.setVisible(false);
 	}
 	
 	/**
@@ -186,6 +220,10 @@ public class MainController {
 		this.disableAll();
 		long difference = this.start.until(LocalTime.now(), SECONDS);
 		this.text.setText("Du vant etter:\n" + difference + " sekunder");
+		this.time = (int) difference;
 		this.totalBombsLabel.setVisible(false);
+		this.usernameLabel.setVisible(true);
+		this.username.setVisible(true);
+		this.submit.setVisible(true);
 	}
 }

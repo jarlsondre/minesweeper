@@ -55,7 +55,7 @@ public class GameFileHandler implements FileHandler {
 	public static void main(String[] args) {
 		// test
 		GameFileHandler f = new GameFileHandler();
-		f.writeToFile("Ole: 80", "games.txt"); // Vet ikke om denne funker bra
+		// f.writeToFile("Ole: 80,", "games.txt"); // Vet ikke om denne funker bra
 		System.out.println(f.readFromFile("games.txt"));
 		
 	}
