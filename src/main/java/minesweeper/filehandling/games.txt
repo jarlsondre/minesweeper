@@ -1,5 +1,6 @@
 jarl: 137,
 Test: 50,
-bendik: 196,
+bendik: 92,
+Bendikgh: 76,
 Arne: 100,
 Per: 60,
