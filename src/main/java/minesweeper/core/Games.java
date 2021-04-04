@@ -47,7 +47,7 @@ public class Games {
 	public void saveGame() {
 		String txt = "";
 		for(Entry<String, String> player : this.players.entrySet()) {
-			txt += player.getKey() +": " + player.getValue() + ","; 
+			txt += player.getKey() +": " + player.getValue() + ",\n"; 
 		}
 		this.fileHandler.writeToFile(txt, "games.txt");
 	}

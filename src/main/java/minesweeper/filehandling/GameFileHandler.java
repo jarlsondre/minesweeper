@@ -21,8 +21,8 @@ public class GameFileHandler implements FileHandler {
 
 	@Override
 	public String readFromFile(String filename) {
-		URL url = getClass().getResource(filename);
-		File file = new File(url.getPath());
+		// URL url = getClass().getResource(filename);
+		File file = new File("src/main/java/minesweeper/filehandling/" + filename);
 		String games = null;
 		try {
 			InputStream in = new FileInputStream(file);			
@@ -39,8 +39,8 @@ public class GameFileHandler implements FileHandler {
 
 	@Override
 	public void writeToFile(String txt, String filename) {
-		URL url = getClass().getResource(filename);
-		File file = new File(url.getPath());
+		// URL url = getClass().getResource(filename);
+		File file = new File("src/main/java/minesweeper/filehandling/" + filename);
 		try {
 			OutputStream out = new FileOutputStream(file);
 			Writer writer = new OutputStreamWriter(out);
@@ -55,7 +55,7 @@ public class GameFileHandler implements FileHandler {
 	public static void main(String[] args) {
 		// test
 		GameFileHandler f = new GameFileHandler();
-		// f.writeToFile("Ole: 80", "games.txt"); Vet ikke om denne funker bra
+		f.writeToFile("Ole: 80", "games.txt"); // Vet ikke om denne funker bra
 		System.out.println(f.readFromFile("games.txt"));
 		
 	}
