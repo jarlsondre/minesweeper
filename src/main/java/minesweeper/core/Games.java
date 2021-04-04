@@ -46,8 +46,10 @@ public class Games {
 	 * */
 	public void saveGames() {
 		String txt = "";
+		String newline = "";
 		for(Entry<String, String> player : this.players.entrySet()) {
-			txt += player.getKey() +": " + player.getValue() + ",\n"; 
+			txt += newline + player.getKey() +": " + player.getValue() + ",";
+			newline = "\n";
 		}
 		this.fileHandler.writeToFile(txt, "games.txt");
 	}
@@ -78,7 +80,9 @@ public class Games {
 	public static void main(String[] args) {
 		Games g = new Games();
 		// test
-		System.out.println(g.getPlayersResults().iterator().next()[0]);
-		System.out.println(g.getPlayersResults().iterator().next()[1]);
+//		System.out.println(g.getPlayersResults().iterator().next()[0]);
+//		System.out.println(g.getPlayersResults().iterator().next()[1]);
+		g.registerPlay("Test", 50);
+		g.saveGames();
 	}
 }
