@@ -10,45 +10,33 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class GameFileHandler implements FileHandler {
 
 	// src/main/java/minesweeper/filehandling/"
 
 	@Override
-	public String readFromFile(String filename) {
+	public String readFromFile(String filename) throws IOException{
 		// URL url = getClass().getResource(filename);
 		File file = new File("src/main/java/minesweeper/filehandling/" + filename);
 		String games = null;
-		try {
-			InputStream in = new FileInputStream(file);			
-			Reader reader = new InputStreamReader(in, "UTF-8");
-			char[] chars = new char[(int) file.length()];
-	        reader.read(chars);
-	        games = new String(chars);	
-	        reader.close();
-		} catch (IOException e) {
-			e.printStackTrace(); // TODO Noe bedre å gjøre her?
-		}
+		InputStream in = new FileInputStream(file);			
+		Reader reader = new InputStreamReader(in, "UTF-8");
+		char[] chars = new char[(int) file.length()];
+        reader.read(chars);
+        games = new String(chars);	
+        reader.close();
         return games;
 	}
 
 	@Override
-	public void writeToFile(String txt, String filename) {
+	public void writeToFile(String txt, String filename) throws IOException {
 		// URL url = getClass().getResource(filename);
 		File file = new File("src/main/java/minesweeper/filehandling/" + filename);
-		try {
-			OutputStream out = new FileOutputStream(file);
-			Writer writer = new OutputStreamWriter(out);
-			writer.write(txt);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		OutputStream out = new FileOutputStream(file);
+		Writer writer = new OutputStreamWriter(out);
+		writer.write(txt);
+		writer.close();
 	}
 	
 	
@@ -56,7 +44,12 @@ public class GameFileHandler implements FileHandler {
 		// test
 		GameFileHandler f = new GameFileHandler();
 		// f.writeToFile("Ole: 80,", "games.txt"); // Vet ikke om denne funker bra
-		System.out.println(f.readFromFile("games.txt"));
+		try {
+			System.out.println(f.readFromFile("games.txt"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

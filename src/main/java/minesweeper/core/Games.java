@@ -1,5 +1,6 @@
 package minesweeper.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,7 +34,13 @@ public class Games {
 	 * Hjelpemetode for å lese inn gamle spill
 	 * */
 	private void readOldGames() {
-		String oldGames = this.fileHandler.readFromFile("games.txt");
+		String oldGames = null;
+		try {
+			oldGames = this.fileHandler.readFromFile("games.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String[] games = oldGames.split(",");
 		for(String game : games) {
 			String[] info = game.split(":");
@@ -51,7 +58,12 @@ public class Games {
 			txt += newline + player.getKey() +": " + player.getValue() + ",";
 			newline = "\n";
 		}
-		this.fileHandler.writeToFile(txt, "games.txt");
+		try {
+			this.fileHandler.writeToFile(txt, "games.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**

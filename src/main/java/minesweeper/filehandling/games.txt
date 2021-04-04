@@ -1,3 +1,5 @@
+jarl: 137,
+Test: 50,
 bendik: 196,
 Arne: 100,
 Per: 60,
