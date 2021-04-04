@@ -46,6 +46,7 @@ public class MainController {
 	 * */
 	public MainController() {
 		this.board = new Board(10);
+		this.games = new Games();
 	}
 	
 	/**
@@ -54,23 +55,18 @@ public class MainController {
 	@FXML
     public void initialize() {
 		this.initializeBoard();
+		this.addScrollPaneElements();
 		this.start = LocalTime.now();
 	}
-
+	
 	@FXML
 	public void addScrollPaneElements() {
 		this.highscoreScrollPane.setContent(new VBox());
 		VBox highscoreBox = (VBox) highscoreScrollPane.getContent();
-		try {
-			Collection<String[]> highscoreList = this.games.getPlayersResults();
-			for (String[] hsElem : highscoreList) {
-				highscoreBox.getChildren().add(new Label(hsElem[0] + ": " + hsElem[1]));
-			}
+		Collection<String[]> highscoreList = this.games.getPlayersResults();
+		for (String[] hsElem : highscoreList) {
+			highscoreBox.getChildren().add(new Label(hsElem[0] + ": " + hsElem[1]));
 		}
-		catch (Exception e) {
-			return;
-		}
-
 	}
 	
 	/**
@@ -105,7 +101,6 @@ public class MainController {
 		this.text.setText("Antall bomber:");
 		this.totalBombsLabel.setVisible(true);
 		totalBombsLabel.setText(Integer.toString(totalBombs));
-		this.addScrollPaneElements();
 	}
 
 	/**

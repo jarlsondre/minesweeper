@@ -1,2 +1,2 @@
-Per: 60,
-Arne: 70
+Per: 80, 
+Arne: 90,

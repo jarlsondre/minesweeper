@@ -45,15 +45,11 @@ public class Games {
 	 * Metode for å lagre alle spillene til fil 
 	 * */
 	public void saveGame() {
-		// TODO save players to file
-	}
-	
-	/**
-	 * Legg til en ny spiller
-	 * @param username brukernavnet til den nye spilleren
-	 * */
-	public void addPlayer(String username) {
-		
+		String txt = "";
+		for(Entry<String, String> player : this.players.entrySet()) {
+			txt += player.getKey() +": " + player.getValue() + ","; 
+		}
+		this.fileHandler.writeToFile(txt, "games.txt");
 	}
 	
 	/**
@@ -63,7 +59,7 @@ public class Games {
 	 * @param sec antall sekunder spilleren brukte
 	 * */
 	public void registerPlay(String username, int sec) {
-		
+		this.players.put(username, String.valueOf(sec));
 	}
 	
 	/**
