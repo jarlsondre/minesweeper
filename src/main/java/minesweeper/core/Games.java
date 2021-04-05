@@ -41,6 +41,9 @@ public class Games {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(oldGames.length() == 0) {
+			return;
+		}
 		String[] games = oldGames.split(",");
 		for(String game : games) {
 			String[] info = game.split(":");
