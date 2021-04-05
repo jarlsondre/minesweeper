@@ -73,6 +73,12 @@ public class Games {
 	 * @param sec antall sekunder spilleren brukte
 	 * */
 	public void registerPlay(String username, int sec) {
+		if(sec < 0) {
+			throw new IllegalArgumentException("sec kan ikke være et negativt tall");
+		}
+		if(username == null || username.equals("")) {
+			throw new NullPointerException("username kan ikke være null eller en tom streng");
+		}
 		this.players.put(username, String.valueOf(sec));
 	}
 	
