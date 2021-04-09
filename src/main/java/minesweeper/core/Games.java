@@ -1,10 +1,8 @@
 package minesweeper.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.NoSuchFileException;
+import java.util.*;
 import java.util.Map.Entry;
 
 import minesweeper.filehandling.FileHandler;
@@ -17,37 +15,38 @@ import minesweeper.filehandling.GameFileHandler;
 public class Games {
 	
 	// Poengene til hver spiller
-	private Map<String, String> players;
+	private List<Player> players;
 	private FileHandler fileHandler;
+	private String fileName = "games.txt";
 	
 	/**
 	 * Konstruktør for game. 
 	 * Leser inn tidligere spill fra fil.
 	 * */
 	public Games() {
-		this.players = new HashMap<String, String>();
+		this.players = new ArrayList<>();
 		this.fileHandler = new GameFileHandler();
-		this.readOldGames();
+		this.readPreviousGamesFromFile();
 	}
 	
 	/**
-	 * Hjelpemetode for å lese inn gamle spill
+	 * Hjelpemetode for å lese inn tidligere spill fra tekstfil
 	 * */
-	private void readOldGames() {
+	private void readPreviousGamesFromFile() {
 		String oldGames = null;
 		try {
-			oldGames = this.fileHandler.readFromFile("games.txt");
+			oldGames = this.fileHandler.readFromFile(this.fileName);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("test");
 		}
-		if(oldGames.length() == 0) {
+		if (oldGames == null) {
 			return;
 		}
 		String[] games = oldGames.split(",");
-		for(String game : games) {
+		for (String game : games) {
 			String[] info = game.split(":");
-			this.players.put(info[0].strip(), info[1].strip());
+			Player player = new Player(info[0].strip(), Integer.parseInt(info[1].strip()));
+			this.players.add(player);
 		}
 	}
 	
@@ -57,14 +56,15 @@ public class Games {
 	public void saveGames() {
 		String txt = "";
 		String newline = "";
-		for(Entry<String, String> player : this.players.entrySet()) {
-			txt += newline + player.getKey() +": " + player.getValue() + ",";
+		// Konstruerer en streng med spillerdata
+		for(Player player : this.players) {
+			txt += newline + player.getName() +": " + player.getHighScoreTime() + ",";
 			newline = "\n";
 		}
 		try {
-			this.fileHandler.writeToFile(txt, "games.txt");
+			this.fileHandler.writeToFile(txt, this.fileName);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Lagring av spillet til fil feilet");
 			e.printStackTrace();
 		}
 	}
@@ -73,37 +73,39 @@ public class Games {
 	 * Registrer et spill for en spiller.
 	 * Det er kun det beste spillet som blir lagret
 	 * @param username spilleren som har spilt et nytt spill
-	 * @param sec antall sekunder spilleren brukte
+	 * @param timeElapsed antall sekunder spilleren brukte
 	 * */
-	public void registerPlay(String username, int sec) {
-		if(sec < 0) {
+	public void registerPlay(String username, int timeElapsed) {
+		if (timeElapsed < 0) {
 			throw new IllegalArgumentException("sec kan ikke være et negativt tall");
 		}
-		if(username == null || username.equals("")) {
-			throw new NullPointerException("username kan ikke være null eller en tom streng");
+		if (username.equals("")) {
+			throw new IllegalArgumentException("username kan ikke være en tom streng");
 		}
-		this.players.put(username, String.valueOf(sec));
+		if (username == null) {
+			throw new NullPointerException("username kan ikke være null");
+		}
+		Player player = new Player(username, timeElapsed);
+		// TODO: sjekk om brukeren allerede finnes
+        if (this.players.contains(player)) {
+        	player = this.players.get(this.players.indexOf(player));
+        	if (timeElapsed < player.getHighScoreTime()) {
+        		player.setHighScoreTime(timeElapsed);
+			}
+		}
+        else {
+        	this.players.add(player);
+		}
+        this.players.sort(null);
 	}
 	
 	/**
 	 * Henter ut alle spillene i synkende rekkelfølge i forhold til poengene
 	 * @return En liste med tupler for hvert spill
 	 * */
-	public Collection<String[]> getPlayersResults() {
-		Collection<String[]> col = new ArrayList<String[]>();
-		for(Entry<String, String> player : this.players.entrySet()) {
-			String[] s = {player.getKey(), player.getValue()}; 
-			col.add(s);
-		}
-        return col;
+	public Collection<Player> getPlayersResults() {
+		List<Player> copiedList = List.copyOf(this.players);
+        return copiedList;
 	}
-	
-	public static void main(String[] args) {
-		Games g = new Games();
-		// test
-//		System.out.println(g.getPlayersResults().iterator().next()[0]);
-//		System.out.println(g.getPlayersResults().iterator().next()[1]);
-		g.registerPlay("Test", 50);
-		g.saveGames();
-	}
+
 }

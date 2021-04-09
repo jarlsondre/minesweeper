@@ -16,10 +16,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import minesweeper.core.Board;
-import minesweeper.core.BombTile;
-import minesweeper.core.Games;
-import minesweeper.core.Tile;
+import minesweeper.core.*;
 
 public class MainController {
 	
@@ -77,9 +74,9 @@ public class MainController {
 	public void addScrollPaneElements() {
 		this.highscoreScrollPane.setContent(new VBox());
 		VBox highscoreBox = (VBox) highscoreScrollPane.getContent();
-		Collection<String[]> highscoreList = this.games.getPlayersResults();
-		for (String[] hsElem : highscoreList) {
-			highscoreBox.getChildren().add(new Label(hsElem[0] + ": " + hsElem[1]));
+		Collection<Player> highscoreList = this.games.getPlayersResults();
+		for (Player hsElem : highscoreList) {
+			highscoreBox.getChildren().add(new Label(hsElem.getName() + ": " + hsElem.getHighScoreTime()));
 		}
 		highscoreBox.setSpacing(10);
 	}
@@ -178,7 +175,7 @@ public class MainController {
 			throw new IllegalStateException("Må ha vunnet et spill før man kan registrere spillet");
 		}
 		if(this.username.getText().isBlank()) {
-			this.usernameLabel.setText("Du må srkive inn et gyldig brukernavn!");
+			this.usernameLabel.setText("Du må skrive inn et gyldig brukernavn!");
 			return;
 		}
 		String username = this.username.getText();

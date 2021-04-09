@@ -1,45 +1,30 @@
 package minesweeper.filehandling;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class GameFileHandler implements FileHandler {
 
-	// src/main/java/minesweeper/filehandling/"
 
 	@Override
-	public String readFromFile(String filename) throws IOException{
-		// URL url = getClass().getResource(filename);
-		File file = new File("src/main/java/minesweeper/filehandling/" + filename);
-		String games = null;
-		InputStream in = new FileInputStream(file);			
-		Reader reader = new InputStreamReader(in, "UTF-8");
-		char[] chars = new char[(int) file.length()];
-        reader.read(chars);
-        games = new String(chars);	
-        reader.close();
-        return games;
+	public String readFromFile(String filename) throws IOException {
+        Path path = Paths.get(System.getProperty("user.home"), filename);
+        String lines = String.join("\n", Files.readAllLines(path));
+        return lines;
 	}
 
 	@Override
 	public void writeToFile(String txt, String filename) throws IOException {
-		// URL url = getClass().getResource(filename);
-		File file = new File("src/main/java/minesweeper/filehandling/" + filename);
-		OutputStream out = new FileOutputStream(file);
-		Writer writer = new OutputStreamWriter(out);
+		Path path = Paths.get(System.getProperty("user.home"), filename);
+		Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8);
 		writer.write(txt);
 		writer.close();
 	}
-	
-	
+
 	public static void main(String[] args) {
 		// test
 		GameFileHandler f = new GameFileHandler();
