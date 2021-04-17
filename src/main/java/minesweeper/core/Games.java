@@ -30,13 +30,12 @@ public class Games {
 	 * Hjelpemetode for å lese inn tidligere spill fra tekstfil
 	 * */
 	private void readPreviousGamesFromFile() {
-		String oldGames = null;
+		String oldGames;
 		try {
 			oldGames = this.saveHandler.loadState();
 		} catch (IOException e) {
-			System.out.println("test");
-		}
-		if (oldGames == null) {
+		    // Dersom programmet ikke klarer å lese fra fil så forsøker ikke
+			// programmet å legge til tidligere spill
 			return;
 		}
 		String[] games = oldGames.split(",");
@@ -73,17 +72,7 @@ public class Games {
 	 * @param timeElapsed antall sekunder spilleren brukte
 	 * */
 	public void registerPlay(String username, int timeElapsed) {
-		if (timeElapsed < 0) {
-			throw new IllegalArgumentException("sec kan ikke være et negativt tall");
-		}
-		if (username.equals("")) {
-			throw new IllegalArgumentException("username kan ikke være en tom streng");
-		}
-		if (username == null) {
-			throw new NullPointerException("username kan ikke være null");
-		}
 		Player player = new Player(username, timeElapsed);
-		// TODO: sjekk om brukeren allerede finnes
         if (this.players.contains(player)) {
         	player = this.players.get(this.players.indexOf(player));
         	if (timeElapsed < player.getHighScoreTime()) {

@@ -8,6 +8,15 @@ public class Player implements Comparable {
     private String name;
 
     public Player(String name, int highScoreTime) {
+        if (name == null) {
+            throw new IllegalArgumentException("Navn kan ikke være null");
+        }
+        if (name.equals("")) {
+            throw new IllegalArgumentException("Navn kan ikke være en tom streng");
+        }
+        if (highScoreTime < 0) {
+            throw new IllegalArgumentException("HighScoreTime kan ikke være negativ");
+        }
         this.name = name;
         this.highScoreTime = highScoreTime;
     }
@@ -34,7 +43,7 @@ public class Player implements Comparable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(this.name);
     }
 
     @Override

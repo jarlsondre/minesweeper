@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public class GameSaveHandler implements SaveHandler {
 
 	private final String saveLocation = "user.home";
-	private String fileName = "games.txt";
+	private String fileName = "minesweeper_games.txt";
 
 
 	@Override
@@ -25,6 +25,14 @@ public class GameSaveHandler implements SaveHandler {
 		Writer writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8);
 		writer.write(state);
 		writer.close();
+	}
+
+	/**
+	 * Metode for å bytte hvilken fil det skal lagres til
+	 * @param fileName navnet på filen det lagres til
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 

@@ -81,6 +81,24 @@ public class BoardTest {
 		Assertions.assertEquals( board.getSize()*board.getSize()*(0.12), counter);
 	}
 
+	@Test
+	public void testTimer() {
+		Board board = new Board(10);
+		// Tester at man ikke kan kalle startTimer når tidtakingen har startet
+		board.startTimer();
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			board.startTimer();
+		});
+
+		int timePassed = board.stopTimer();
+		Assertions.assertFalse(timePassed < 0);
+
+		// Tester at man ikke kan kalle stopTimer når tidtakingen ikke har startet
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			board.stopTimer();
+		});
+	}
+
 	
 	/**
 	 * Åpner alle tiles som ikke har bomber rundt seg og
@@ -99,6 +117,7 @@ public class BoardTest {
 		}
 	}
 
+
 	// forklar denne
 	private void checkListenersOpen(Tile tile, Board board) {
 		for (int i = -1; i < 2; i++) {
@@ -110,4 +129,6 @@ public class BoardTest {
 			}
 		}
 	}
+
+
 }

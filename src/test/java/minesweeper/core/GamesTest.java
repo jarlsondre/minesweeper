@@ -15,7 +15,7 @@ public class GamesTest {
 		games.registerPlay("Test", 1000);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> games.registerPlay("Test", -1));
 		Assertions.assertThrows(IllegalArgumentException.class, () -> games.registerPlay("", 5));
-		Assertions.assertThrows(NullPointerException.class, () -> games.registerPlay(null, 5));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> games.registerPlay(null, 5));
 	}
 
 	@Test
