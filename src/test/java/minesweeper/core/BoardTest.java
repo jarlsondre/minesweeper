@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class BoardTest {
 
 	@Test
-	public void testConstructor() {
+	public void testConstructor() { // Kunne sjekket at den har samme dimensjon i begge retninger, feks. gjennom getTile eller å iterere gjennom hele, siste på hver rad feks.
 		Board board = new Board(13);
 		Assertions.assertEquals(13, board.getSize());
 		board = new Board(2);
@@ -36,6 +36,7 @@ public class BoardTest {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			board.getTile(-1, -1);
 		});
+		// Hvorfor gjør vi dette :)
 		board.getTile(1, 1);
 		board.getTile(10, 10);
 	}
@@ -69,7 +70,7 @@ public class BoardTest {
 	}
 
 	@Test
-	public void testAmountOfBombs() {
+	public void testAmountOfBombs() { // kanskje ikke nøyaktig, men greit
 		Board board = new Board(40);
 		int counter = 0;
 		for (Tile t : board) {
@@ -98,6 +99,7 @@ public class BoardTest {
 		}
 	}
 
+	// forklar denne
 	private void checkListenersOpen(Tile tile, Board board) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {

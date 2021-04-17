@@ -1,5 +1,7 @@
 package minesweeper.core;
 
+import java.util.Objects;
+
 public class Player implements Comparable {
 
     private int highScoreTime;
@@ -30,6 +32,10 @@ public class Player implements Comparable {
        return ((Player) o).getName().equals(this.getName());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 
     @Override
     public int compareTo(Object o) {

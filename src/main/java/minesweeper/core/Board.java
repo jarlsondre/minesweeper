@@ -1,5 +1,7 @@
 package minesweeper.core;
 
+import java.time.LocalTime;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import java.util.*;
 
 /**
@@ -9,6 +11,10 @@ import java.util.*;
 public class Board implements Iterable<Tile> {
 	private final int size;
 	private final List<List<Tile>> tileList = new ArrayList<List<Tile>>();
+	private int bombAmount;
+
+	// Variabler for å ta tiden
+	private LocalTime start;
 
 	/**
 	 * Konstruktør til brettet.
@@ -39,6 +45,7 @@ public class Board implements Iterable<Tile> {
 
 		// Setter antall (12% skal være bomber)
 		int bombsNotPlaced = (int) (size*size*(0.12));
+		this.bombAmount = bombsNotPlaced;
 		while (bombsNotPlaced != 0) {
 			Random random = new Random();
 			int rand_x = random.nextInt(size);
@@ -48,7 +55,6 @@ public class Board implements Iterable<Tile> {
 				bombsNotPlaced -= 1;
 			}
 		}
-
 
 
 		for (int i = 0; i < size; i++) {
@@ -93,13 +99,77 @@ public class Board implements Iterable<Tile> {
 	 * @return Antall SafeTiles
 	 * */
 	public int getSafeTilesAmount() {
-		int counter = 0;
-		for(Tile t : this) {
-			if(t instanceof SafeTile) {
-				counter += 1;
+		return this.size*this.size - this.bombAmount;
+	}
+
+	/**
+	 * Metode som gir ut antall BombTiles brettet inneholder
+	 * @return Antall BombTiles
+	 */
+	public int getBombAmount() {
+		return this.bombAmount;
+	}
+
+	/**
+	 * Metoder som gir ut antall Tiles som har blitt åpnet
+	 * @return Antall tiles som har blitt åpnet
+	 */
+	private int getOpenedTileAmount() {
+		int openedAmount = 0;
+		for (Tile tile : this) {
+			if (tile.isOpened()) {
+				openedAmount++;
 			}
 		}
-		return counter;
+		return openedAmount;
+	}
+
+	/**
+	 * Metode som sjekker om spillet har blitt vunnet eller ikke
+	 * @return boolsk verdi for om man har vunnet eller ikke
+	 */
+	public boolean checkGameWon() {
+		return (this.getOpenedTileAmount() == this.getSafeTilesAmount());
+	}
+
+	/**
+	 * Metode som sjekker om spillet har blitt tapt, altså om en bombe har
+	 * blitt åpnet eller ikke
+	 * @return boolsk verdi for om man har tapt eller ikke
+	 */
+	public boolean checkGameLost() {
+		for (Tile tile : this) {
+			if (tile.isOpened() && tile.hasBomb()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Metode som starter tidtakingen
+	 */
+	public void startTimer() { // Skriv tester for dette
+		if (this.start == null) {
+			this.start = LocalTime.now();
+		}
+		else {
+			throw new IllegalStateException("Kan ikke starte tiden når den allerede er startet");
+		}
+	}
+
+	/**
+	 * Metode som stopper tidtakingen og gir ut tiden
+	 */
+	public int stopTimer() {
+		if (this.start != null) {
+			int time = (int) this.start.until(LocalTime.now(), SECONDS);
+			this.start = null;
+			return time;
+		 }
+		else {
+			throw new IllegalStateException("Kan ikke stoppe timeren når den ikke er startet");
+		}
 	}
 
 	/**

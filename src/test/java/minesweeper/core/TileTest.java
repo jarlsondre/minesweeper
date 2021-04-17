@@ -21,7 +21,7 @@ public class TileTest {
 	}
 	
 	@Test
-	public void testGetSurroundingBombAmount() {
+	public void testGetSurroundingBombAmount() { // Kunne evt sjekket om det stemmer
 		for(Tile t : this.board) {
 			if(t instanceof SafeTile) {
 				SafeTile safeTile = (SafeTile) t;

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="751.0" prefWidth="1346.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesweeper.fxui.MainController">
+<AnchorPane prefHeight="751.0" prefWidth="1346.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesweeper.fxui.MainController">
    <children>
       <VBox fx:id="Vbox" layoutX="85.0" layoutY="90.0" prefHeight="390.0" prefWidth="587.0" />
       <Label layoutX="270.0" layoutY="14.0" text="Minesweeper!">
@@ -25,8 +25,8 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="username" layoutX="719.0" layoutY="155.0" />
-      <Label fx:id="usernameLabel" layoutX="720.0" layoutY="116.0" prefHeight="21.0" prefWidth="150.0" text="Brukernavn:" />
-      <Button fx:id="submit" layoutX="884.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleSubmitGame" prefHeight="20.0" prefWidth="50.0" text="Save" />
+      <TextField fx:id="username" layoutX="719.0" layoutY="155.0" visible="false" />
+      <Label fx:id="usernameLabel" layoutX="720.0" layoutY="116.0" prefHeight="21.0" prefWidth="150.0" text="Brukernavn:" visible="false" />
+      <Button fx:id="submit" layoutX="884.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleSubmitGame" prefHeight="20.0" prefWidth="50.0" text="Save" visible="false" />
    </children>
 </AnchorPane>

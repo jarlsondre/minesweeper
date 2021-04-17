@@ -1,12 +1,10 @@
 package minesweeper.core;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.util.*;
-import java.util.Map.Entry;
 
-import minesweeper.filehandling.FileHandler;
-import minesweeper.filehandling.GameFileHandler;
+import minesweeper.savehandling.SaveHandler;
+import minesweeper.savehandling.GameSaveHandler;
 
 
 /**
@@ -16,16 +14,15 @@ public class Games {
 	
 	// Poengene til hver spiller
 	private List<Player> players;
-	private FileHandler fileHandler;
-	private String fileName = "games.txt";
-	
+	private SaveHandler saveHandler;
+
 	/**
 	 * Konstruktør for game. 
 	 * Leser inn tidligere spill fra fil.
 	 * */
 	public Games() {
 		this.players = new ArrayList<>();
-		this.fileHandler = new GameFileHandler();
+		this.saveHandler = new GameSaveHandler();
 		this.readPreviousGamesFromFile();
 	}
 	
@@ -35,7 +32,7 @@ public class Games {
 	private void readPreviousGamesFromFile() {
 		String oldGames = null;
 		try {
-			oldGames = this.fileHandler.readFromFile(this.fileName);
+			oldGames = this.saveHandler.loadState();
 		} catch (IOException e) {
 			System.out.println("test");
 		}
@@ -62,7 +59,7 @@ public class Games {
 			newline = "\n";
 		}
 		try {
-			this.fileHandler.writeToFile(txt, this.fileName);
+			this.saveHandler.saveState(txt);
 		} catch (IOException e) {
 			System.err.println("Lagring av spillet til fil feilet");
 			e.printStackTrace();

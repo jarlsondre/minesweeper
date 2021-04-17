@@ -1,11 +1,6 @@
 package minesweeper.fxui;
 
-import java.time.LocalTime;
 import java.util.Collection;
-import java.util.List;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -13,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import minesweeper.core.*;
@@ -22,7 +16,6 @@ public class MainController {
 	
 	// Core-komponenter
 	private Board board;
-	private LocalTime start;
 	private int time;
 	private Games games;
 
@@ -65,13 +58,10 @@ public class MainController {
     public void initialize() {
 		this.initializeBoard();
 		this.addScrollPaneElements();
-		this.usernameLabel.setVisible(false);
-		this.username.setVisible(false);
-		this.submit.setVisible(false);
-		this.start = LocalTime.now();
+		this.board.startTimer();
 	}
 	
-	public void addScrollPaneElements() {
+	public void addScrollPaneElements() { // kunne brukt fxml-list
 		this.highscoreScrollPane.setContent(new VBox());
 		VBox highscoreBox = (VBox) highscoreScrollPane.getContent();
 		Collection<Player> highscoreList = this.games.getPlayersResults();
@@ -109,10 +99,9 @@ public class MainController {
 			}
 			this.Vbox.getChildren().add(hBox);
 		}
-		int totalBombs = this.board.getSize()*this.board.getSize() - this.board.getSafeTilesAmount();
 		this.text.setText("Antall bomber:");
 		this.totalBombsLabel.setVisible(true);
-		totalBombsLabel.setText(Integer.toString(totalBombs));
+		totalBombsLabel.setText(Integer.toString(this.board.getBombAmount()));
 	}
 
 	/**
@@ -120,26 +109,22 @@ public class MainController {
 	 * */
 	private void updateBoard() {
 	    // Går gjennom hver tile og sjekker om den har blitt åpnet.
-		int openedTiles = 0;
 		for (Tile tile : board) {
 			if (tile.isOpened()) {
-				openedTiles += 1;
 				int x_cor = tile.getX();
 				int y_cor = tile.getY();
 				Button tileButton = (Button) this.Vbox.lookup("#" + x_cor + "," + y_cor);
 				tileButton.setText(tile.toString());
 				tileButton.setDisable(true);
-				// Dersom man åpner en BombTile taper man
-				if (tile instanceof BombTile) {
-					this.gameOver();
-					return;
-				}
 			}
 		}
 
-		// Dersom man har åpnet riktig antall tiles har man vunnet
-		if (this.board.getSafeTilesAmount() == openedTiles) {
+		// Sjekker om spillet har blitt vunnet og kaller riktig metode
+		if (this.board.checkGameWon()) {
 			this.winGame();
+		}
+		else if (this.board.checkGameLost()) {
+			this.gameOver();
 		}
 	}
 
@@ -168,10 +153,14 @@ public class MainController {
 			}
 		}
 	}
-	
+
+	/**
+	 * Metode som håndterer at brukeren trykker på Submit. Registrerer
+	 * spillet dersom brukeren har vunnet og har et gyldig brukernavn
+	 */
 	@FXML
 	private void handleSubmitGame() {
-		if(this.time == -1) {
+		if(this.board.checkGameWon()) {
 			throw new IllegalStateException("Må ha vunnet et spill før man kan registrere spillet");
 		}
 		if(this.username.getText().isBlank()) {
@@ -193,31 +182,30 @@ public class MainController {
 		this.Vbox.getChildren().clear();
 		this.board = new Board(10);
 		this.initializeBoard();
-		this.start = LocalTime.now();
+		this.board.startTimer();
 		this.time = -1;
 		this.usernameLabel.setVisible(false);
 		this.username.setVisible(false);
 		this.submit.setVisible(false);
 	}
-	
+
 	/**
 	 * Hjelpemetode for å håndtere at man trykker på en bombe
 	 * */
 	private void gameOver() {
 		this.disableAll();
-		long difference = this.start.until(LocalTime.now(), SECONDS);
-		this.text.setText("Du tapte etter:\n" + difference + " sekunder");
+		this.time = this.board.stopTimer();
+		this.text.setText("Du tapte etter:\n" + this.time + " sekunder");
 		this.totalBombsLabel.setVisible(false);
 	}
-	
+
 	/**
 	 * Hjelpemetode for å håndtere at man vinner spillet
 	 * */
 	private void winGame() {
 		this.disableAll();
-		long difference = this.start.until(LocalTime.now(), SECONDS);
-		this.text.setText("Du vant etter:\n" + difference + " sekunder");
-		this.time = (int) difference;
+		this.time = this.board.stopTimer();
+		this.text.setText("Du vant etter:\n" + this.time + " sekunder");
 		this.totalBombsLabel.setVisible(false);
 		this.usernameLabel.setVisible(true);
 		this.username.setVisible(true);
