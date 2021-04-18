@@ -13,7 +13,7 @@ public class Board implements Iterable<Tile> {
 	private final List<List<Tile>> tileList = new ArrayList<List<Tile>>();
 	private int bombAmount;
 
-	// Variabler for å ta tiden
+	// Variabel for å ta tiden
 	private LocalTime start;
 
 	/**

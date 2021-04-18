@@ -34,6 +34,17 @@ public class GameSaveHandlerTest {
        }
     }
 
+    @Test
+    public void testLoad() {
+        // Tester at det kastes et unntak dersom filen ikke eksisterer
+        SaveHandler gameSaveHandler = new GameSaveHandler();
+        ((GameSaveHandler) gameSaveHandler).setFileName("tullefil");
+        Assertions.assertThrows(IOException.class, () -> {
+            gameSaveHandler.loadState();
+        });
+
+    }
+
     @AfterEach
     public void deleteFile() {
         // Sletter filen som testen bruker

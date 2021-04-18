@@ -8,9 +8,16 @@ import org.junit.jupiter.api.Test;
 public class BoardTest {
 
 	@Test
-	public void testConstructor() { // Kunne sjekket at den har samme dimensjon i begge retninger, feks. gjennom getTile eller å iterere gjennom hele, siste på hver rad feks.
+	public void testConstructor() {
+		// Sjekker en normal verdi
 		Board board = new Board(13);
 		Assertions.assertEquals(13, board.getSize());
+		for (int i = 1; i < 14; i++) {
+			// Sjekker at man kan hente ut nr. 13 på hver rad
+			// for at dimensjonen ikke skal være skjevfordelt
+			board.getTile(13, i);
+		}
+		// Sjekker et kant-tilfelle
 		board = new Board(2);
 		Assertions.assertEquals(2, board.getSize());
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -36,7 +43,7 @@ public class BoardTest {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			board.getTile(-1, -1);
 		});
-		// Hvorfor gjør vi dette :)
+		// Sjekker at man kan hente ut hjørnene
 		board.getTile(1, 1);
 		board.getTile(10, 10);
 	}
@@ -70,7 +77,7 @@ public class BoardTest {
 	}
 
 	@Test
-	public void testAmountOfBombs() { // kanskje ikke nøyaktig, men greit
+	public void testAmountOfBombs() {
 		Board board = new Board(40);
 		int counter = 0;
 		for (Tile t : board) {
@@ -100,14 +107,13 @@ public class BoardTest {
 	}
 
 	
-	/**
-	 * Åpner alle tiles som ikke har bomber rundt seg og
-	 * sjekker at alle tiles rundt disse åpnes automatisk.
-	 * */
+
 	@Test
 	public void testTileListeners() {
 		Board board = new Board(10);
 		SafeTile tile = null;
+		// Åpner alle tile ssom ikke har bomber rundt seg
+		// og sjekker at alle tiles rundt disse åpnes automatisk
 		for (Tile t : board) {
 			if (t instanceof SafeTile && !t.isOpened() && ((SafeTile) t).getSurroundingBombAmount() == 0) {
 				tile = (SafeTile) t;
@@ -118,10 +124,11 @@ public class BoardTest {
 	}
 
 
-	// forklar denne
+	// Hjelpemetode til testTileListeners
 	private void checkListenersOpen(Tile tile, Board board) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
+				// Sjekker om alle tiles rundt 'tile' har blitt åpnet slik de skal
 				if (tile.x + j > 0 && tile.x + j < board.getSize() + 1 && tile.y + i > 0
 						&& tile.y + i < board.getSize() + 1) {
 					Assertions.assertTrue(board.getTile(tile.x + j, tile.y + i).isOpened());

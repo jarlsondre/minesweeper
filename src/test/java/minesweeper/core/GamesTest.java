@@ -36,6 +36,7 @@ public class GamesTest {
 		Collection<Player> col = new ArrayList<>(Arrays.asList(player1, player2, player3, player4));
 		
 		// Teste at results inneholder de fire spillene
+		// og at de ikke har blitt endret
         Assertions.assertTrue(results.containsAll(col));
 	}
 

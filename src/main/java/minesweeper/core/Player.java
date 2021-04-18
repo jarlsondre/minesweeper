@@ -30,6 +30,7 @@ public class Player implements Comparable {
     }
 
     public void setHighScoreTime(int highScoreTime) {
+        // TODO: Add validation
         this.highScoreTime = highScoreTime;
     }
 

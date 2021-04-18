@@ -20,6 +20,7 @@ public abstract class Tile {
 	 * @param board Brettet Tilen hører til
 	 */
 	public Tile(final int x, final int y, final Board board) {
+		// TODO: add validation
 		this.x = x;
 		this.y = y;
 		this.board = board;
