@@ -123,6 +123,40 @@ public class BoardTest {
 		}
 	}
 
+	@Test
+	public void testWonOrLostGame() {
+		Board board = new Board(10);
+
+		// Sjekker at brettet starter i riktig state
+		Assertions.assertFalse(board.checkGameWon());
+		Assertions.assertFalse(board.checkGameLost());
+
+		// Åpner alle tiles som ikke er bomber (altså vinner spillet)
+		for (Tile tile : board) {
+			if (tile instanceof SafeTile) {
+				tile.open();
+			}
+		}
+
+		// Sjekker at spillet er vunnet og ikke tapt
+		Assertions.assertTrue(board.checkGameWon());
+		Assertions.assertFalse(board.checkGameLost());
+
+		board = new Board(10);
+
+		// Åpner en bombe på det nye brettet (altså taper spillet)
+		for (Tile tile : board) {
+			if (tile instanceof BombTile) {
+				tile.open();
+				break;
+			}
+		}
+
+		// Sjekker at spillet er tapt
+		Assertions.assertTrue(board.checkGameLost());
+		Assertions.assertFalse(board.checkGameWon());
+	}
+
 
 	// Hjelpemetode til testTileListeners
 	private void checkListenersOpen(Tile tile, Board board) {
