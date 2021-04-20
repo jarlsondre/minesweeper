@@ -169,7 +169,7 @@ public class MainController {
 	 */
 	@FXML
 	private void handleSubmitGame() {
-		if(this.board.checkGameWon()) {
+		if(!this.board.checkGameWon()) {
 			throw new IllegalStateException("Må ha vunnet et spill før man kan registrere spillet");
 		}
 		if(this.username.getText().isBlank()) {
