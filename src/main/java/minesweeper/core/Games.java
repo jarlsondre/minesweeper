@@ -1,7 +1,9 @@
 package minesweeper.core;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import minesweeper.savehandling.SaveHandler;
 import minesweeper.savehandling.GameSaveHandler;
@@ -71,7 +73,7 @@ public class Games {
 	 * @param username spilleren som har spilt et nytt spill
 	 * @param timeElapsed antall sekunder spilleren brukte
 	 * */
-	public void registerPlay(String username, int timeElapsed) {
+	public void registerPlay(final String username, final int timeElapsed) {
 		Player player = new Player(username, timeElapsed);
         if (this.players.contains(player)) {
         	player = this.players.get(this.players.indexOf(player));

@@ -21,6 +21,22 @@ public class TileTest {
 		// Tester at en SafeTile ikke har en bombe
 		t = new SafeTile(5, 5, this.board);
 		Assertions.assertFalse(t.hasBomb());
+		
+		// Tester at du ikke kan lage tiles utenfor brettet
+		Assertions.assertThrows(IllegalArgumentException.class,
+				() -> new SafeTile(0, 1, this.board));
+		Assertions.assertThrows(IllegalArgumentException.class,
+				() -> new SafeTile(1, 0, this.board));
+		Assertions.assertThrows(IllegalArgumentException.class,
+				() -> new SafeTile(11, 1, this.board));
+		Assertions.assertThrows(IllegalArgumentException.class,
+				() -> new SafeTile(1, 11, this.board));
+		
+		// Tester at du kan lage tiles for hvert hjørne
+		t = new SafeTile(10, 1, this.board);
+		t = new SafeTile(1, 10, this.board);
+		t = new SafeTile(1, 1, this.board);
+		t = new SafeTile(10, 10, this.board);
 	}
 	
 	@Test

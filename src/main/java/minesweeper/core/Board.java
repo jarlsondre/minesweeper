@@ -1,8 +1,13 @@
 package minesweeper.core;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
 import static java.time.temporal.ChronoUnit.SECONDS;
-import java.util.*;
 
 /**
  * Klasse som skal representere brettet. Dette skal inneholde en liste med
@@ -21,7 +26,7 @@ public class Board implements Iterable<Tile> {
 	 * 
 	 * @param size størrelsen på brettet i en dimensjon.
 	 */
-	public Board(int size) {
+	public Board(final int size) {
 		if (size < 2) {
 			throw new IllegalArgumentException("Brettet kan ikke ha mindre størrelse enn 2");
 		}
@@ -40,18 +45,20 @@ public class Board implements Iterable<Tile> {
 	private void makeBoard() {
 
 		// Initialiserer en 2d-liste med bare 0
-		List<List<Integer>> bombMap = new ArrayList();
-		Collections.nCopies(size, new ArrayList(Collections.nCopies(size, 0))).forEach((list) -> bombMap.add(new ArrayList(list)));
+		List<List<Integer>> bombMap = new ArrayList<List<Integer>>();
+		Collections.nCopies(size,
+				new ArrayList<Integer>(Collections.nCopies(size, 0)))
+				.forEach((list) -> bombMap.add(new ArrayList<Integer>(list)));
 
 		// Setter antall (12% skal være bomber)
 		int bombsNotPlaced = (int) (size*size*(0.12));
 		this.bombAmount = bombsNotPlaced;
 		while (bombsNotPlaced != 0) {
 			Random random = new Random();
-			int rand_x = random.nextInt(size);
-			int rand_y = random.nextInt(size);
-			if (bombMap.get(rand_y).get(rand_x) == 0) {
-				bombMap.get(rand_y).set(rand_x, 1);
+			int randX = random.nextInt(size);
+			int randY = random.nextInt(size);
+			if (bombMap.get(randY).get(randX) == 0) {
+				bombMap.get(randY).set(randX, 1);
 				bombsNotPlaced -= 1;
 			}
 		}
@@ -74,7 +81,7 @@ public class Board implements Iterable<Tile> {
 	 * Hjelpemetode som legger til alle lytterne tilhørende en tile.
 	 * @param tile tilen som skal få tildelt lyttere
 	 * */
-	private void addListenersToTile(SafeTile tile) {
+	private void addListenersToTile(final SafeTile tile) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if (tile.x + j > 0 && tile.x + j < this.getSize() + 1 && tile.y + i > 0 && tile.y + i < this.getSize() + 1
@@ -91,7 +98,7 @@ public class Board implements Iterable<Tile> {
 	 * @return Størrelsen på brettet i en dimensjon.
 	 */
 	public int getSize() {
-		return this.tileList.size();
+		return this.size;
 	}
 	
 	/**
@@ -160,6 +167,7 @@ public class Board implements Iterable<Tile> {
 
 	/**
 	 * Metode som stopper tidtakingen og gir ut tiden
+	 * @return En int som forteller tiden som har gått fra brukeren startet spillet
 	 */
 	public int stopTimer() {
 		if (this.start != null) {
@@ -205,7 +213,6 @@ public class Board implements Iterable<Tile> {
 	 */
 	@Override
 	public Iterator<Tile> iterator() {
-		// TODO Auto-generated method stub
 		Iterator<Tile> it = new Iterator<Tile>() {
 			private int currentX = 1;
 			private int currentY = 1;
@@ -217,7 +224,6 @@ public class Board implements Iterable<Tile> {
 			 */
 			@Override
 			public boolean hasNext() {
-				// TODO Auto-generated method stub
 				return this.currentY < size + 1;
 			}
 
@@ -228,7 +234,6 @@ public class Board implements Iterable<Tile> {
 			 */
 			@Override
 			public Tile next() {
-				// TODO Auto-generated method stub
 				Tile nextTile = getTile(this.currentX, this.currentY);
 				if (this.currentX == size) {
 					this.currentY += 1;

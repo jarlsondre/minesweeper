@@ -9,7 +9,7 @@ import java.util.Collection;
  */
 public class SafeTile extends Tile implements AdjacentListener {
 
-	Collection<SafeTile> adjacentSafeTiles = new ArrayList<SafeTile>();
+	private Collection<SafeTile> adjacentSafeTiles = new ArrayList<SafeTile>();
 
 	/**
 	 * Konstruktør før å lage en SafeTile.
@@ -81,8 +81,9 @@ public class SafeTile extends Tile implements AdjacentListener {
 
 	/**
 	 * Metode som legger til lyttere
+	 * @param SafeTile tile som skal lytte på dette objektet
 	 */
-	public void addListener(SafeTile tile) {
+	public void addListener(final SafeTile tile) {
 		this.adjacentSafeTiles.add(tile);
 	}
 

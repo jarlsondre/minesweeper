@@ -10,7 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import minesweeper.core.*;
+import minesweeper.core.Board;
+import minesweeper.core.Games;
+import minesweeper.core.Player;
+import minesweeper.core.Tile;
 
 public class MainController {
 	
@@ -18,35 +21,37 @@ public class MainController {
 	private Board board;
 	private int time;
 	private Games games;
+	
+	private final int boardSize = 10;
 
 	// FXML-komponenter
 	@FXML
-	VBox Vbox;
+	private VBox Vbox;
 
 	@FXML
-	Label totalBombsLabel;
+	private Label totalBombsLabel;
 	
 	@FXML
-	Label text;
+	private Label text;
 
 	@FXML
-	ScrollPane highscoreScrollPane;
+	private ScrollPane highscoreScrollPane;
 	
 	@FXML 
-	TextField username;
+	private TextField username;
 	
 	@FXML
-	Label usernameLabel;
+	private Label usernameLabel;
 	
 	@FXML
-	Button submit;
+	private Button submit;
 
 	/**
 	 * konstruktør for kontrolleren. 
 	 * Lager brettet i core.
 	 * */
 	public MainController() {
-		this.board = new Board(10);
+		this.board = new Board(boardSize);
 		this.games = new Games();
 		this.time = -1;
 	}
@@ -61,7 +66,11 @@ public class MainController {
 		this.board.startTimer();
 	}
 	
-	public void addScrollPaneElements() { // kunne brukt fxml-list
+	/**
+	 * Legger til alle spillerene med tilhørende highscore
+	 * i highscoreScrollPane.
+	 */
+	public void addScrollPaneElements() {
 		this.highscoreScrollPane.setContent(new VBox());
 		VBox highscoreBox = (VBox) highscoreScrollPane.getContent();
 		Collection<Player> highscoreList = this.games.getPlayersResults();
@@ -111,9 +120,9 @@ public class MainController {
 	    // Går gjennom hver tile og sjekker om den har blitt åpnet.
 		for (Tile tile : board) {
 			if (tile.isOpened()) {
-				int x_cor = tile.getX();
-				int y_cor = tile.getY();
-				Button tileButton = (Button) this.Vbox.lookup("#" + x_cor + "," + y_cor);
+				int xCor = tile.getX();
+				int yCor = tile.getY();
+				Button tileButton = (Button) this.Vbox.lookup("#" + xCor + "," + yCor);
 				tileButton.setText(tile.toString());
 				tileButton.setDisable(true);
 			}
@@ -132,11 +141,11 @@ public class MainController {
 	 * Hjelpemetode for å åpne tiles
 	 * @param button knappen som har blitt trykt på
 	 * */
-	private void handleTileClick(Button button) {
+	private void handleTileClick(final Button button) {
 		String[] id = button.getId().split(",");
-		int x_cor = Integer.parseInt(id[0]);
-		int y_cor = Integer.parseInt(id[1]);
-		Tile tile = board.getTile(x_cor, y_cor);
+		int xCor = Integer.parseInt(id[0]);
+		int yCor = Integer.parseInt(id[1]);
+		Tile tile = board.getTile(xCor, yCor);
 		tile.open();
 		this.updateBoard();
 	}
@@ -180,7 +189,7 @@ public class MainController {
 	@FXML
 	private void handleNewGame() {
 		this.Vbox.getChildren().clear();
-		this.board = new Board(10);
+		this.board = new Board(boardSize);
 		this.initializeBoard();
 		this.board.startTimer();
 		this.time = -1;

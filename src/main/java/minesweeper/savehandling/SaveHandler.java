@@ -10,18 +10,18 @@ import java.io.IOException;
 
 public interface SaveHandler {
 	
+	/**
+	 * Laster inn tilstanden til spillet fra lagringsenhet
+	 * @return En String som utgjør tilstanden til spillet
+	 * @throws IOException Om noe gikk galt under lastingen
+	 */
 	String loadState() throws IOException;
 	
+	/**
+	 * Lagrer spillet til lagringsenhet
+	 * @param state tilstanden til spillet
+	 * @throws IOException Om noe gikk galt under lagringen
+	 */
 	void saveState(String state) throws IOException;
 
 }
-
-
-/*
-Kunne ha laget SaveHandler med metoder som loadState og saveStat
-
-testing av save:
-
-- prøve å lagre noe, prøv å laste det inn igjen, sjekk at det er likt
-- endre noe, repeat det over, sjekk at alt stemmere
-*/

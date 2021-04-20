@@ -7,11 +7,11 @@ package minesweeper.core;
  */
 public abstract class Tile {
 
-	protected int x;
-	protected int y;
+	protected final int x;
+	protected final int y;
 	protected boolean opened;
 
-	protected Board board;
+	protected final Board board;
 
 	/**
 	 * Konstruktør før å lage Tiles.
@@ -20,7 +20,12 @@ public abstract class Tile {
 	 * @param board Brettet Tilen hører til
 	 */
 	public Tile(final int x, final int y, final Board board) {
-		// TODO: add validation
+		if(x < 1 || x > board.getSize()) {
+			throw new IllegalArgumentException("x-kordinaten kan ikke være mindre enn 1 eller større en board-size");
+		}
+		if(y < 1 || y > board.getSize()) {
+			throw new IllegalArgumentException("y-kordinaten kan ikke være mindre enn 1 eller større en board-size");
+		}
 		this.x = x;
 		this.y = y;
 		this.board = board;

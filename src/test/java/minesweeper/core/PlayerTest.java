@@ -58,4 +58,12 @@ public class PlayerTest {
         Assertions.assertEquals(player2.compareTo(player3), 0);
 
     }
+    
+    @Test
+    public void testSetHighScoreTime() {
+    	Player player1 = new Player("Jarl", 40);
+    	Assertions.assertThrows(IllegalArgumentException.class,
+    			() -> player1.setHighScoreTime(-1));
+    	player1.setHighScoreTime(0);
+    }
 }

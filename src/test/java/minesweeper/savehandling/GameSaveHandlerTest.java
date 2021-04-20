@@ -42,7 +42,18 @@ public class GameSaveHandlerTest {
         Assertions.assertThrows(IOException.class, () -> {
             gameSaveHandler.loadState();
         });
-
+    }
+    
+    @Test
+    public void testSetFileName() {
+    	// Tester at ugyldige filnavn ikke funker
+    	GameSaveHandler handler = new GameSaveHandler();
+    	Assertions.assertThrows(IllegalArgumentException.class,
+    			() -> handler.setFileName(""));
+    	Assertions.assertThrows(IllegalArgumentException.class,
+    			() -> handler.setFileName(null));
+    	// Tester at et gyldig filnavn funker
+    	handler.setFileName("Gyldig");
     }
 
     @AfterEach
