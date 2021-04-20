@@ -127,7 +127,7 @@ public class BoardTest {
 	public void testWonOrLostGame() {
 		Board board = new Board(10);
 
-		// Sjekker at brettet starter i riktig state
+		// Sjekker at brettet starter i riktig state.
 		Assertions.assertFalse(board.checkGameWon());
 		Assertions.assertFalse(board.checkGameLost());
 
